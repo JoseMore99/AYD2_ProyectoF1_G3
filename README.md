@@ -17,6 +17,9 @@
 
 - [Proyecto Fase 1](#ayd2_proyectof1_g3)
   - [Antecedentes](#antecedentes)
+  - [Core del negocio](#core-del-negocio)
+    - [Descripción](#descripcion)
+    - [Casos de uso alto nivel](#casos-de-uso-alto-nivel)
   - [Casos de uso expandidos](#casos-de-uso-expandidos)
     - [Casos de uso para rol de conductor](#casos-de-uso-para-el-rol-de-conductor)
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
@@ -34,7 +37,31 @@
 - **Regulacion**: La expansión global de las aplicaciones de transporte privado ha llevado a un aumento en la regulación gubernamental, con muchos países implementando leyes para proteger a los usuarios y garantizar condiciones laborales justas para los conductores. Empresas como Uber han tenido que adaptarse a regulaciones que varían de un país a otro, incluyendo la adopción de seguros, licencias especiales, y estándares de seguridad. Esto subraya la importancia de desarrollar una aplicación que no solo sea segura y eficiente, sino también conforme a las regulaciones locales y capaz de adaptarse a posibles cambios legales futuros.
 - **Necesidad de Innovación**: Reconociendo las limitaciones de su sistema actual, Por ello se decide explorar soluciones tecnológicas que mejoren la seguridad y eficiencia del servicio. Aunque se presentó una propuesta preliminar por parte de un programador freelance, las deficiencias en la documentación y la falta de claridad en la propuesta generaron preocupaciones sobre la viabilidad y sostenibilidad a largo plazo de la solución.
 - **Expectativas**: El objetivo de modernizar Qnave es desarrollar una solución integral que aborde los desafíos actuales y siente las bases para el crecimiento futuro, incluyendo un software flexible y escalable, medidas de seguridad avanzadas, y mejoras en la experiencia del usuario y la eficiencia operativa.
- 
+
+## Core del negocio
+
+### Descripción
+Qnave inicio sus operaciones en el año 2020 para dar solución a las problematicas del pais, desde su creación la compañia se ha enfrentado a los retos derivados de la pandemia global, esto impulso a Qnave a darle un giro de negocio para satisfacer las necesidades mas importantes de los clientes para ello el modelo se basa en llamadas telefónicas entre los usuarios y los conductores, esta modalidad permitió mantener a flote la empresa por un periodo de tiempo pero pronto surgieron mas desafios que complicaron el funcionamiento de la empresa.
+
+La delincuencia fue un factor detonante en la modalidad y el giro del negocio que optaba Qnave, al aumentar la ola de inseguridad y el crimen organizado en el pais, los conductores y usuarios fueron los mas afectados obligando a los conductores a buscar otras maneras de ganarse la vida con trabajos de menor riesgo y los usuarios al sentirse inseguros optaban por utilizar los servicios de las otras empresas competidoras.
+
+Se busca generar una solucion y proponer una documentación completa y satisfacer todos los problemas y conflictos que actualmente aquejan a la empresa Qnave, se requiere satisfacer las expectativas en terminos de seguridad, escalabilidad y viabilidad a largo plazo, ademas se propone que los costos de operacion del sistema no sean excesivamente altos ya que la sostenibilidad a largo plazo es una de las prioridades.
+
+## Casos de Uso de alto nivel
+
+### CDU de alto nivel
+
+![D](./img/CDU_AltoNivel.png)
+
+### Primera descomposición
+
+![D](./img/CDU_SistemaViajes.png)
+
+![D](./img/CDU_Asistente.png)
+
+![D](./img/CDU_Admin.png)
+
+
 ## Casos de uso expandidos 
 
 ### Casos de Uso para el Rol de Conductor
