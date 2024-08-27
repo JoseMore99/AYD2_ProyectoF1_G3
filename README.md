@@ -17,6 +17,9 @@
 
 - [Proyecto Fase 1](#ayd2_proyectof1_g3)
   - [Antecedentes](#antecedentes)
+  - [Requerimientos](#requerimientos)
+    - [Requerimientos Funcionales](#requerimientos-funcionales)
+    - [Requerimientos no Funcionales](#requerimientos-no-funcionales)
   - [Casos de uso expandidos](#casos-de-uso-expandidos)
     - [Casos de uso para rol de conductor](#casos-de-uso-para-el-rol-de-conductor)
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
@@ -35,6 +38,70 @@
 - **Necesidad de Innovación**: Reconociendo las limitaciones de su sistema actual, Por ello se decide explorar soluciones tecnológicas que mejoren la seguridad y eficiencia del servicio. Aunque se presentó una propuesta preliminar por parte de un programador freelance, las deficiencias en la documentación y la falta de claridad en la propuesta generaron preocupaciones sobre la viabilidad y sostenibilidad a largo plazo de la solución.
 - **Expectativas**: El objetivo de modernizar Qnave es desarrollar una solución integral que aborde los desafíos actuales y siente las bases para el crecimiento futuro, incluyendo un software flexible y escalable, medidas de seguridad avanzadas, y mejoras en la experiencia del usuario y la eficiencia operativa.
  
+## Requerimientos
+
+
+### Requerimientos funcionales 
+#### Registros
+1. Registro de Usuario: Los usuarios deben poder registrarse proporcionando su nombre completo, fecha de nacimiento, género, correo electrónico, fotografía del DPI, número de celular, contraseña y confirmación de contraseña.
+2. Registro de conductor: Los conductores deben registrarse proporcionando: Nombre completo, Número de teléfono, Edad, Número de DPI, Correo electrónico, Currículum vitae (CV) en formato PDF, Fotografía, Fotografía del vehículo, Número de placa, Marca del vehículo, Año del vehículo, Género, Estado civil, Número de cuenta
+y Dirección de domicilio
+3. Registro de Asistentes: Los asistentes deben ser registrados por el administrador con la siguiente información: Nombre completo, Número de teléfono, Edad, Número de DPI, Correo electrónico, Currículum vitae (CV), Fotografía, Género, Estado civil, Número de cuenta y Dirección de domicilio
+#### Usuarios
+1. Inicio de Sesión: Los usuarios deben poder iniciar sesión en la aplicación utilizando su correo electrónico y contraseña.
+2. Modificar información: El usuario puede cambiar algún dato personal que ingresó al registrarse.
+3. Calificar conductor:Después de un viaje, el usuario puede darle una calificación al conductor.
+4. Ver información del conductor: el usuario puede ver la informacion del conductor que hara su viaje.
+5. Reportar algún problema: El usuario puede reportar el problema desde la aplicación.
+6. Métodos de pago: El usuario puede pagar en efectivo o con tarjeta.
+7. Guardar ubicación de viaje: El usuario puede guardar direcciones frecuentes.
+8. Cancelar viaje: Si el usuario necesita cancelar un viaje, puede hacerlo y explicar por qué.
+9. Pedir viaje: El usuario podrá pedir viajes desde la aplicación indicando su punto de partida y punto de llegada.
+#### Conductor
+1. Inicio de sesión: El conductor puede acceder a la plataforma de dos maneras: usando su correo y contraseña, o con su código de trabajador, que se le asigna al registrarse.
+2. Aceptar viaje: Cuando un usuario solicita un viaje, la notificación se envía a todos los conductores. El sistema evita que dos conductores acepten al mismo pasajero, asegurando que solo uno lo tome.
+3. Cancelar viaje: Si un conductor ya aceptó un viaje, puede cancelarlo si es necesario. 
+4. Modificar información: El conductor puede actualizar su información personal o la de su vehículo enviando un documento con los cambios que quiere hacer. 
+5. Reportar un problema: Si el conductor enfrenta algún problema, puede reportarlo en la plataforma, describiendo lo ocurrido y la fecha en que sucedió.
+6. Calificar usuarios: El conductor puede calificar al usuario después de completar un viaje, usando un sistema de estrellas, para evaluar su comportamiento.
+7. Ver información del usuario: Antes de aceptar un viaje, el conductor puede revisar la información básica del usuario, como su nombre, calificación general, y comentarios de otros conductores.
+8. Finalizar viaje: Cuando el conductor llega al destino, debe indicar que el viaje ha terminado. La plataforma registrará la fecha y detalles del viaje.
+9. Resumen de ganancias: El conductor puede ver cuánto ha ganado. A medianoche, la plataforma guarda ese total en un historial y lo reinicia para el día siguiente. También puede ver el acumulado total de todas sus ganancias anteriores.
+
+#### Asistente
+1. Inicio de sesión: El asistente puede acceder a la plataforma usando su correo y contraseña o con un código de trabajador asignado al registrarse.
+2. Aceptar solicitud de empleo a conductores: El asistente revisa las solicitudes de empleo de los conductores. 
+3. Ver información de los conductores: El asistente puede ver detalles sobre los conductores. 
+4. Dar de baja a un conductor: El asistente puede dar de baja a un conductor por incumplir políticas, recibir muchas quejas, o a solicitud del propio conductor. 
+5. Ver información de los usuarios: El asistente también puede ver información de los usuarios registrados.
+6. Dar de baja a un usuario
+En caso de comportamiento inapropiado, el asistente puede dar de baja a un usuario.
+7. Generar ofertas para los usuarios: El asistente puede crear ofertas especiales para los usuarios, aplicando descuentos según lo considere necesario.
+8. Ver solicitud de cambios de información del conductor:
+El asistente revisa los documentos que los conductores envían para actualizar su información y realiza los cambios necesarios.
+9. Reporte de los vehículos: El asistente puede generar y ver reportes detallados sobre los
+##### Administrador
+1. Generar reportes: El administrador puede crear reportes que muestren datos importantes sobre el funcionamiento de la plataforma, incluyendo las calificaciones de usuarios y conductores, estadísticas de registro, uso, y ganancias.
+2. Ver calificaciones: El administrador tiene acceso a las calificaciones de todos los usuarios y conductores, lo que le permite monitorear la calidad del servicio.
+3. Estadísticas registro: El administrador puede ver gráficos que muestran la cantidad de usuarios, conductores, y asistentes registrados en la plataforma.
+4. Estadísticas de uso: El administrador puede ver gráficos que muestran cuántos viajes se han completado, cuántos se han cancelado, y cuántos están en espera.
+5. Reporte de Ganancia: El administrador puede ver cuánto ha ganado la plataforma, tanto en bruto como en neto, con cada viaje. Puede filtrar estos reportes por fecha para un control más detallado.
+6. Contratar asistentes: El administrador puede contratar nuevos asistentes, creando sus perfiles en el sistema, asignándoles credenciales, y configurando sus permisos según el rol que desempeñarán.
+7. Dar de baja a un asistente: Si un asistente ya no es necesario o no está cumpliendo con sus funciones, el administrador puede desactivar su cuenta y reasignar sus tareas a otros miembros del equipo. Esta acción queda registrada en el sistema para seguimiento.
+### Requerimientos no funcionales 
+1. Seguridad: La aplicación debe garantizar la protección de los datos personales de los usuarios y la información de pago.
+2. Escalabilidad: El sistema debe ser capaz de manejar un aumento en el número de usuarios y solicitudes de viaje sin degradar el rendimiento.
+3. Usabilidad: La interfaz de usuario debe ser intuitiva y fácil de usar, garantizando una buena experiencia para el usuario.
+4. Disponibilidad: La aplicación debe estar disponible y operativa en todo momento, con un tiempo de inactividad mínimo.
+5. Rendimiento: La aplicación debe responder rápidamente a las solicitudes de los usuarios, con tiempos de carga mínimos.
+6. Compatibilidad: La aplicación debe ser compatible con diferentes dispositivos y sistemas operativos móviles.
+7. Seguridad de Datos: Toda la información sensible, incluyendo datos personales y transacciones financieras, debe estar cifrada en tránsito y en reposo utilizando protocolos de seguridad.
+8. Autenticación Segura: El sistema debe contar con mecanismos robustos de autenticación y autorización para asegurar que cada tipo de usuarios este autorizado para acceder a sus funcionalidades respectivas.
+9. Soporte para Usuarios Simultáneos: La aplicación debe soportar un gran número de usuarios y conductores simultáneamente sin degradar el rendimiento.
+10. Rendimiento del Sistema: La aplicación debe responder a las solicitudes de los usuarios en el minimo periodo de tiempo y procesar la información de forma veloz.
+11. Facilidad de Mantenimiento: El sistema debe ser modular, permitiendo actualizaciones o reemplazos de componentes sin afectar la operación, y contar con documentación técnica detallada y actualizada.
+12. Cumplimiento Normativo: El sistema debe cumplir con regulaciones locales e internacionales aplicables, como las de protección de datos, y mantener un registro detallado de todas las transacciones y actividades para auditorías.
+
 ## Casos de uso expandidos 
 
 ### Casos de Uso para el Rol de Conductor
