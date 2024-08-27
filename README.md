@@ -17,8 +17,8 @@
 
 - [Proyecto Fase 1](#ayd2_proyectof1_g3)
   - [Antecedentes](#antecedentes)
-    - [Descripción](#descripcion)
   - [Core del negocio](#core-del-negocio)
+    - [Descripción](#descripción)
     - [Casos de uso alto nivel](#casos-de-uso-alto-nivel)
   - [Requerimientos](#requerimientos)
     - [Requerimientos Funcionales](#requerimientos-funcionales)
