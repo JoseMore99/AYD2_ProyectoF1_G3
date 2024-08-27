@@ -22,9 +22,8 @@
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
-  - [Sección 2](#sección-2)
-    - [Subsección 2.1](#subsección-21)
-    - [Subsección 2.2](#subsección-22)
+  - [Diagrama Entidad Relacion](#Diagrama-2)
+    
 
 ## Antecedentes
 - **Creciente Inseguridad y sus Efectos en la Operatividad**: La ola de delincuencia organizada en Guatemala ha sido un desafío dificil de manejar, afectando la confianza tanto de los conductores como de los usuarios. Los incidentes de asaltos y fraudes no solo deterioraron la percepción de seguridad, sino que también resultaron en la pérdida de personal clave, lo que afectó gravemente la capacidad operativa de las empresas de trasporte provado.
@@ -418,3 +417,9 @@
 |                 | 3. El sistema genera el reporte y lo muestra en pantalla.                                                                             |
 | **Excepciones** | **Paso**                                                                                                                                |
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
+
+
+## Diagrama Entidad Relación
+
+![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Realación")
+
