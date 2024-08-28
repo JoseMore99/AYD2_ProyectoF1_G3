@@ -29,7 +29,8 @@
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
   - [Diagrama de Componentes](#diagrama-de-componentes)
-  - [Diagrama Entidad Relacion](#Diagrama-2)
+  - [Diagrama Entidad Relacion](#diagrama-entidad-relación)
+  - [Prototipos](#prototipos)
     
 
 ## Antecedentes
@@ -514,9 +515,32 @@ El asistente revisa los documentos que los conductores envían para actualizar s
 | **Excepciones** | **Paso**                                                                                                                                |
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
 
-## Diagrama de Componentes
-![D](./img/DiagramaComponentes.png)
 ## Diagrama Entidad Relación
 
-![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Realación")
+![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Relación")
 
+## Prototipos 
+
+#### Inicio de sesión
+
+![Inicio de sesión](/Prototipo/Prototipado-Inicio%20de%20Sesion.drawio.svg "Prototipo de inicio de sesión")
+
+#### Home
+
+![Home](/Prototipo/Prototipado-Home.drawio.svg "Home")
+
+#### Registro de Usuarios
+
+![Registro de Usuarios](/Prototipo/Prototipado-Registro_Usuario.drawio.svg "Prototipo de Registro de Usuarios")
+
+#### Modificación de datos
+
+![Modificación de datos](/Prototipo/Prototipado-Modificacion_Datos.drawio.svg "Prototipo de Modificación de datos")
+
+#### Solicitar nuevo viaje
+
+![Solicitar nuevo viaje](/Prototipo/Prototipado-Solicitar_Viaje.drawio.svg "Solicitar nuevo viaje")
+
+#### Aceptar nuevo viaje conductor
+
+![Aceptar nuevo viaje conductor](/Prototipo/Prototipado-Aceptar_viaje_conductor.drawio.svg "Aceptar nuevo viaje conductor")
