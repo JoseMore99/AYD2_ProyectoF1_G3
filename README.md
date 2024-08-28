@@ -515,6 +515,9 @@ El asistente revisa los documentos que los conductores envían para actualizar s
 | **Excepciones** | **Paso**                                                                                                                                |
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
 
+## Diagrama de componentes
+![D](./img/DiagramaComponentes.png)
+
 ## Diagrama Entidad Relación
 
 ![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Relación")
