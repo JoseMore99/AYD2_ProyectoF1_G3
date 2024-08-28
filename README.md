@@ -28,6 +28,7 @@
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
+  - [Diagrama de Componentes](#diagrama-de-componentes)
   - [Diagrama Entidad Relacion](#Diagrama-2)
     
 
@@ -513,7 +514,8 @@ El asistente revisa los documentos que los conductores envían para actualizar s
 | **Excepciones** | **Paso**                                                                                                                                |
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
 
-
+## Diagrama de Componentes
+![D](./img/Diagrama Componentes.png)
 ## Diagrama Entidad Relación
 
 ![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Realación")
