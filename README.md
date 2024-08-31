@@ -29,6 +29,8 @@
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
   - [Diagrama de Componentes](#diagrama-de-componentes)
+  - [Matrices de trazabilidad](#matrices-de-trazabilidad)
+  - [Estilos arquitectónicos](#estilos-arquitectónicos)
   - [Diagrama Entidad Relacion](#diagrama-entidad-relación)
   - [Prototipos](#prototipos)
     
@@ -584,6 +586,8 @@ Tecnología: Sequelize, para manejar las consultas SQL de manera ORM.
 **Capa de Persistencia**:
 Responsabilidad: Se encarga del almacenamiento y recuperación de datos.
 Tecnología: MySQL como base de datos.
+
+![D](/Estilo/Estilos_arquitectonicos.drawio.svg)
 
 ### Ejemplo de implementación de los servicios de estilos por capas y SOA
 
