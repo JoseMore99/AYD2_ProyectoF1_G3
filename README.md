@@ -503,6 +503,194 @@ a. Stakeholders vrs Requerimientos
 b. Stakeholders vrs CDU  
 c. Requerimiento vrs CDU  
 
+
+## Estilos Arquitectónicos
+
+## SOA (Service-Oriented Architecture)
+
+### Descripción
+El estilo arquitectónico SOA se centra en la organización de los sprotocolo de ervicios como componentes distribuidos que interactúan entre si. Estos servicios son autónomos, independientes y permiten la reutilización y escalabilidad en la solución. SOA es ideal para este tipo de aplicaciones que necesitan integrar múltiples servicios y facilitar la comunicación entre ellos, proporcionando flexibilidad y manteniendo la modularidad.
+
+### Características Clave
+- **Desacoplamiento**: Cada servicio es independiente y desacoplado de los demás.
+- **Interoperabilidad**: Los servicios pueden ser consumidos por diferentes aplicaciones, independientemente de las tecnologías utilizadas.
+- **Reusabilidad**: Los servicios pueden ser reutilizados en diferentes aplicaciones y contextos.
+- **Escalabilidad**: SOA permite escalar horizontalmente al desplegar servicios en múltiples instancias.
+
+### Implementación en el Proyecto
+- **Backend**: El backend en Node.js/Express expondrá servicios RESTful que podrán ser consumidos por el frontend y otros servicios.
+- **Frontend**: El frontend en React interactuará con los servicios RESTful proporcionados por el backend.
+- **Integración de Servicios**: Se integrarán servicios externos como AWS S3 para el almacenamiento de imágenes y servicios de correo electrónico para notificaciones.
+
+## Estilo Arquitectónico: Arquitectura en Capas
+
+### Descripción
+La Arquitectura en Capas organiza el sistema en diferentes niveles, donde cada capa tiene una responsabilidad específica. Esto facilita la separación de preocupaciones, mejora la mantenibilidad y permite que cada capa evolucione de manera independiente.
+
+### Capas Definidas
+1. **Capa de Presentación (Frontend)**: Implementada en React, maneja la interacción con el usuario final, proporcionando una interfaz gráfica que comunica con la capa de lógica de negocio.
+2. **Capa de Lógica de Negocio (Backend)**: Implementada en Node.js con Express, contiene la lógica de negocio de la aplicación, validaciones, y procesamiento de datos.
+3. **Capa de Persistencia de Datos (Base de Datos)**: Utiliza MySQL como base de datos relacional en la nube, con Sequelize como ORM para manejar las interacciones con la base de datos.
+4. **Capa de Servicios Externos**: Incluye servicios como AWS S3 para almacenamiento de imágenes y servicios de correo para notificaciones y recuperación de contraseñas.
+
+### Implementación en el Proyecto
+- **Frontend**: React manejará la capa de presentación, interactuando con la API del backend.
+- **Backend**: Node.js/Express se encargará de la lógica de negocio y servirá como intermediario entre el frontend y la base de datos.
+- **Persistencia**: Sequelize gestionará las interacciones con MySQL, aplicando los modelos de datos definidos.
+- **Servicios Externos**: Integración con AWS S3 para almacenamiento y servicios de correo para notificaciones.
+
+## Integración de SOA y Arquitectura en Capas
+
+### Descripción
+La combinación de SOA y Arquitectura en Capas en este proyecto permite crear una solución modular, escalable y bien organizada. SOA facilita la creación de servicios independientes que pueden ser reutilizados o escalados según sea necesario, mientras que la Arquitectura en Capas asegura una separación clara de responsabilidades dentro de la aplicación.
+
+### Implementación en el Proyecto
+- **Servicios Independientes**: Cada funcionalidad principal (registro, inicio de sesión, gestión de usuarios, etc.) será implementada como un servicio RESTful independiente, respetando la arquitectura SOA.
+- **Capas Claramente Definidas**: Estos servicios se integrarán en la Arquitectura en Capas, donde cada capa maneja una parte específica del procesamiento (presentación, lógica de negocio, persistencia).
+
+## Seguridad
+
+### Descripción
+La seguridad es una consideración transversal en la arquitectura. Se implementarán medidas de seguridad en cada capa y servicio para proteger la aplicación y los datos sensibles de los usuarios.
+
+### Implementación de Seguridad
+- **Autenticación y Autorización**: Implementada usando JWT para asegurar que solo usuarios autenticados puedan acceder a los servicios.
+- **Cifrado de Datos**: Uso de bcrypt para cifrar contraseñas y `crypto` para cifrar datos sensibles antes de almacenarlos en la base de datos.
+- **SSL/TLS**: Para proteger la transmisión de datos entre el frontend y el backend.
+
+
+#### 1. Descripción General de la Combinación SOA con Capas
+En esta combinación:
+
+**Arquitectura SOA**: Se encarga de dividir el sistema en diferentes servicios autónomos que exponen sus funcionalidades a través de interfaces (APIs). Cada servicio se ocupa de un conjunto específico de funcionalidades del negocio (Usuarios, Conductores, Pagos, etc.).
+
+**Arquitectura en Capas**: Cada servicio dentro de la arquitectura SOA se organiza internamente en capas, como la capa de presentación, capa de lógica de negocio, capa de acceso a datos, y capa de persistencia.
+
+#### 2. Estructura Interna de un Servicio en Capas
+Supongamos que tienes un servicio de "Usuarios" en tu arquitectura SOA. Este servicio podría estar organizado internamente en las siguientes capas:
+
+**Capa de Presentación (Frontend)**:
+Responsabilidad: Maneja la interacción con los usuarios (esto puede ser un componente frontend en React, pero en un servicio puro, esta capa se refiere al manejo de las solicitudes HTTP).
+Tecnología: Express.js maneja las solicitudes y respuestas HTTP.
+
+**Capa de Lógica de Negocio**:
+Responsabilidad: Contiene la lógica de la aplicación, como validaciones, transformaciones de datos, y la coordinación entre diferentes partes del servicio.
+Tecnología: Aquí usarías controladores en Express o funciones de servicios.
+
+**Capa de Acceso a Datos (DAO)**:
+Responsabilidad: Interactúa con la base de datos y otros sistemas de persistencia.
+Tecnología: Sequelize, para manejar las consultas SQL de manera ORM.
+
+**Capa de Persistencia**:
+Responsabilidad: Se encarga del almacenamiento y recuperación de datos.
+Tecnología: MySQL como base de datos.
+
+### Ejemplo de implementación de los servicios de estilos por capas y SOA
+
+```
+Ejemplo de una estructura para el estilo en backend 
+con Nodejs/Express
+
+/services
+  /user-service
+    /controllers (Capa de Lógica de Negocio)
+      - userController.js`
+    /models (Capa de Persistencia)
+      - User.js`
+    /routes (Capa de Presentación)
+      - userRoutes.js`
+    /services (Capa de Lógica de Negocio)
+      - userService.js`
+    /dao (Capa de Acceso a Datos)
+      - userDAO.js`
+    /config (Configuración y utilidades)
+      - database.js`
+    - app.js` (Entrada del servicio)
+  
+  /auth-service
+    /controllers (Capa de Lógica de Negocio)
+      - authController.js`
+    /models (Capa de Persistencia)
+      - AuthToken.js`
+    /routes (Capa de Presentación)
+      - authRoutes.js`
+    /services (Capa de Lógica de Negocio)
+      - authService.js`
+    /dao (Capa de Acceso a Datos)
+      - authDAO.js`
+    /config (Configuración y utilidades)
+      - securityConfig.js`
+    - app.js` (Entrada del servicio)
+  
+  /payment-service
+    /controllers (Capa de Lógica de Negocio)
+      - paymentController.js`
+    /models (Capa de Persistencia)
+      - Payment.js`
+    /routes (Capa de Presentación)
+      - paymentRoutes.js`
+    /services (Capa de Lógica de Negocio)
+      - paymentService.js`
+    /dao (Capa de Acceso a Datos)
+      - paymentDAO.js`
+    /config (Configuración y utilidades)
+      - paymentGateway.js`
+    - app.js` (Entrada del servicio)
+
+
+```
+
+```
+Ejemplo de una estructura para el estilo en frontend con React
+
+/src
+  /components (Componentes Reutilizables)
+    /User
+      - UserForm.js`
+      - UserList.js`
+      - UserProfile.js`
+    /Auth
+      - LoginForm.js`
+      - RegisterForm.js`
+  
+  /pages (Páginas Principales)
+    - LoginPage.js`
+    - RegisterPage.js`
+    - UserProfilePage.js`
+    - PaymentPage.js`
+  
+  /services (Capa de Servicios)
+    - userService.js`
+    - authService.js`
+    - paymentService.js`
+  
+  /hooks (Custom Hooks)
+    - useAuth.js`
+    - useUser.js`
+  
+  /context (Contextos Globales)
+    - AuthContext.js`
+    - UserContext.js`
+  
+  /utils (Utilidades)
+    - apiClient.js` (Configuración de Axios para llamadas HTTP)
+    - validators.js` (Funciones de validación)
+  
+  /assets (Recursos Estáticos)
+    - logo.png`
+    - styles.css`
+  
+  /routes (Gestión de Rutas)
+    - AppRoutes.js`
+  
+  /config (Configuraciones)
+    - config.js` (Configuración global de la aplicación)
+  
+  - App.js` (Entrada principal de la aplicación)
+  - index.js` (Punto de entrada)
+
+```
+
 ## Diagrama Entidad Relación
 
 ![Entidad Relación](/Entidad_Relacion/MED_DB.png "Modelo Entidad Relación")
