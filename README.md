@@ -28,10 +28,11 @@
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
+  - [Diagrama de Arquitectura](#diagrama-de-arquitectura)
+  - [Matrices de trazabilidad](#matrices-de-trazabilidad)
   - [Diagrama de Implementacion](#diagrama-de-implementacion)
   - [Diagrama de Despliegue](#diagrama-de-despliegue)
   - [Diagrama de Componentes](#diagrama-de-componentes)
-  - [Matrices de trazabilidad](#matrices-de-trazabilidad)
   - [Estilos arquitectónicos](#estilos-arquitectónicos)
   - [Diagrama Entidad Relacion](#diagrama-entidad-relación)
   - [Prototipos](#prototipos)
@@ -500,6 +501,15 @@ Se busca generar una solucion y proponer una documentación completa y satisface
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
 
 
+## Diagrama de arquitectura
+![D](./img/Arquitectura.jpg)
+
+
+## Matrices de Trazabilidad
+
+a. Stakeholders vrs Requerimientos  
+b. Stakeholders vrs CDU  
+c. Requerimiento vrs CDU  
 
 ## Diagrama de despliegue
 ![D](./img/DiagramaDespliegue.png)
@@ -509,13 +519,6 @@ Se busca generar una solucion y proponer una documentación completa y satisface
 
 ## Diagrama de implementacion
 ![D](./img/DiagramaImplementacion.png)
-
-## Matrices de Trazabilidad
-
-a. Stakeholders vrs Requerimientos  
-b. Stakeholders vrs CDU  
-c. Requerimiento vrs CDU  
-
 
 ## Estilos Arquitectónicos
 
