@@ -35,6 +35,9 @@
   - [Estilos arquitectónicos](#estilos-arquitectónicos)
   - [Diagrama Entidad Relacion](#diagrama-entidad-relación)
   - [Prototipos](#prototipos)
+  - [Patrones de Diseño](#patrones-de-diseño)
+    - [Patron Start Engine](#patron-start-engine)
+    - [Patron Singleton](#patron-singleton)
     
 
 ## Antecedentes
@@ -735,3 +738,18 @@ Ejemplo de una estructura para el estilo en frontend con React
 #### Aceptar nuevo viaje conductor
 
 ![Aceptar nuevo viaje conductor](/Prototipo/Prototipado-Aceptar_viaje_conductor.drawio.svg "Aceptar nuevo viaje conductor")
+
+
+## Patrones de Diseño
+
+### Patron Start Engine
+
+Para el patron Start Engine se encarga de proporcionar el metodo Start a la clase y clases extendidas de esta, este metodo se asegura de iniciar todas las instancias requeridas y que nosotros estaremos utilizando a lo largo del proyecto, en este caso utilizaremos una base de datos por lo que este metodo se asegurará de iniciar este servicio con la instancia definida, al igual que el servicio de peticiones HTTP el cual contendra todos las rutas que utilizaremos pues este metodo se encargara de iniciarlas asi mismo se propone otra clase para el sistema de autenticación el cual debera tener un metodo start para que puedamos garantizar que se inicie.
+
+![D](./img/PatronStartEngine.png)
+
+### Patron Singleton
+
+Para el patron Singleton se plantea la siguiente solución la cual nos ayudara a resolver el conflicto que pudiera llegar a ocurrir si un mismo usuario deseara realizar un viaja mientras esta en un viaje actualmente, lo que hace el patron propuesto es devolver la misma instancia del viaje si el usuario deseara crear un nuevo viaje, por lo que con esto nos aseguramos que no pueda crear un viaje mientras esta en uno.
+
+![D](./img/PatronSingleton.png)
