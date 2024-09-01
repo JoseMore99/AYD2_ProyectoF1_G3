@@ -28,6 +28,8 @@
     - [Casos de uso para rol de usuario](#casos-de-uso-para-el-rol-de-usuario)
     - [Casos de uso para rol de asistente](#casos-de-uso-para-el-rol-de-asistente)
     - [Casos de uso para rol de administrador](#casos-de-uso-para-el-rol-de-administrador)
+  - [Diagrama de Implementacion](#diagrama-de-implementacion)
+  - [Diagrama de Despliegue](#diagrama-de-despliegue)
   - [Diagrama de Componentes](#diagrama-de-componentes)
   - [Matrices de trazabilidad](#matrices-de-trazabilidad)
   - [Estilos arquitectónicos](#estilos-arquitectónicos)
@@ -497,8 +499,17 @@ Se busca generar una solucion y proponer una documentación completa y satisface
 | **Excepciones** | **Paso**                                                                                                                                |
 |                 | A1. Si el reporte no puede ser generado, el sistema muestra un mensaje de error.                                                     |
 
+
+
+## Diagrama de despliegue
+![D](./img/DiagramaDespliegue.png)
+
 ## Diagrama de componentes
 ![D](./img/DiagramaComponentes.png)
+
+## Diagrama de implementacion
+![D](./img/DiagramaImplementacion.png)
+
 ## Matrices de Trazabilidad
 
 a. Stakeholders vrs Requerimientos  
