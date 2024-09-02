@@ -39,6 +39,7 @@
   - [Patrones de Diseño](#patrones-de-diseño)
     - [Patron Start Engine](#patron-start-engine)
     - [Patron Singleton](#patron-singleton)
+    - [Patron role base access](#patron-role-based-access-control-rbac)
     
 
 ## Antecedentes
@@ -756,3 +757,36 @@ Para el patron Start Engine se encarga de proporcionar el metodo Start a la clas
 Para el patron Singleton se plantea la siguiente solución la cual nos ayudara a resolver el conflicto que pudiera llegar a ocurrir si un mismo usuario deseara realizar un viaja mientras esta en un viaje actualmente, lo que hace el patron propuesto es devolver la misma instancia del viaje si el usuario deseara crear un nuevo viaje, por lo que con esto nos aseguramos que no pueda crear un viaje mientras esta en uno.
 
 ![D](./img/PatronSingleton.png)
+
+### Patron Role based access control (RBAC)
+
+El patrón RBAC (Control de Acceso Basado en Roles) es un modelo de seguridad que restringe el acceso al sistema en función de los roles asignados a los usuarios. En este, los permisos no se asignan directamente a los usuarios, sino a los roles, y los usuarios obtienen permisos a través de su asociación con uno o más roles.
+
+Se ha elegido RBAC porque permite una gestión más eficiente y segura de los permisos, garantizando que los usuarios solo tengan acceso a las funciones y datos que son relevantes para sus roles específicos. Esto es especialmente crítico en un entorno como el de Qnave, donde la seguridad de la información es prioritaria, y existen múltiples roles con diferentes niveles de acceso (usuarios, conductores, asistentes, administradores).
+
+### Casos de uso ejemplo para aplicación patron role based access control
+
+##### Caso de Uso 1: Registro de Usuario
+
+**Actor:** Usuario  
+**Descripción:** El usuario se registra en el sistema y se le asigna el rol de "Usuario". Este rol tiene permisos para acceder a funcionalidades básicas como solicitar un viaje, modificar su perfil y gestionar métodos de pago.  
+**Resultado:** Usuario registrado con el rol asignado y permisos correspondientes.
+
+##### Caso de Uso 2: Acceso al Panel de Administrador
+
+**Actor:** Administrador  
+**Descripción:** Un administrador inicia sesión y accede al panel de administración, donde tiene permisos para gestionar usuarios, conductores, asistentes y ver reportes del sistema.  
+**Resultado:** Acceso concedido solo a funcionalidades administrativas.
+
+##### Caso de Uso 3: Gestión de Conductores por Asistente
+
+**Actor:** Asistente  
+**Descripción:** Un asistente gestiona la información de los conductores (agregar, modificar, eliminar) y asigna viajes, pero no tiene acceso a las funcionalidades de administración de usuarios o la configuración general del sistema.  
+**Resultado:** Acceso limitado a funcionalidades de gestión de conductores.
+
+
+![D](./img/PatronRole.png)
+
+
+
+
