@@ -758,6 +758,11 @@ Para el patron Singleton se plantea la siguiente solución la cual nos ayudara a
 
 ![D](./img/PatronSingleton.png)
 
+### Patron Data Mapper
+El uso del Data Mapper Pattern en combinación con Sequelize en un proyecto como el de Qnave ofrece varias ventajas clave. Estas ventajas se alinean con los objetivos del proyecto, como mejorar la seguridad, la escalabilidad, y la mantenibilidad del sistema. Sequelize en sí mismo es una implementación del patrón de Data Mapper, donde cada modelo de Sequelize actúa como un mapeador que traduce entre las estructuras de la base de datos y los objetos de negocio en la aplicación. Este patrón facilita mantener el código organizado y desacoplado de la estructura de la base de datos.
+
+![D](./img/DataMapperPattern.png)
+
 ### Patron Role based access control (RBAC)
 
 El patrón RBAC (Control de Acceso Basado en Roles) es un modelo de seguridad que restringe el acceso al sistema en función de los roles asignados a los usuarios. En este, los permisos no se asignan directamente a los usuarios, sino a los roles, y los usuarios obtienen permisos a través de su asociación con uno o más roles.
