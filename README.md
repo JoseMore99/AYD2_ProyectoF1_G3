@@ -802,6 +802,12 @@ El patrón Strategy es un patrón de diseño de comportamiento que permite defin
 El patrón Strategy también es aplicable para manejar la lógica relacionada con los métodos de pago en Qnave. Dado que Qnave podría ofrecer múltiples formas de pago a sus usuarios, como tarjetas de crédito, PayPal, transferencias bancarias, o incluso pagos en efectivo, el patrón Strategy permitiría implementar y gestionar estas diferentes opciones de manera flexible y modular.
 
 ![D](./img/PatronStrategy.png)
+## Patron Observer
+
+El patrón Observer define una dependencia uno-a-muchos entre objetos para que cuando uno de los objetos cambie de estado, todos sus dependientes sean notificados y actualizados automáticamente. Los reportes deben actualizarse automáticamente cuando cambian los datos en el sistema, por lo que se usara el patrón Observer para que los reportes “observen” los cambios en los datos y se regeneren o actualicen según sea necesario.
+
+![D](./img/Observer.png)
+
 
 ## Tablero Kanban
 ![D](./img/kanban1.png)
