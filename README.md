@@ -39,7 +39,10 @@
   - [Patrones de Diseño](#patrones-de-diseño)
     - [Patron Start Engine](#patron-start-engine)
     - [Patron Singleton](#patron-singleton)
+    - [Patron data mapper](#patron-data-mapper)
     - [Patron role base access](#patron-role-based-access-control-rbac)
+    - [Patron Strategy](#patron-strategy)
+  -[Tablero Kanban](#tablero-kanban)
     
 
 ## Antecedentes
@@ -800,3 +803,6 @@ El patrón Strategy también es aplicable para manejar la lógica relacionada co
 
 ![D](./img/PatronStrategy.png)
 
+## Tablero Kanban
+![D](./img/kanban1.png)
+![D](./img/kanban2.png)
