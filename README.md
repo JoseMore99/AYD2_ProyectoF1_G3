@@ -792,6 +792,11 @@ Se ha elegido RBAC porque permite una gestión más eficiente y segura de los pe
 
 ![D](./img/PatronRole.png)
 
+### Patron Strategy
 
+El patrón Strategy es un patrón de diseño de comportamiento que permite definir una familia de algoritmos, encapsular cada uno de ellos y hacerlos intercambiables. Este patrón es útil cuando quieres que un algoritmo varíe según el contexto, sin que el cliente tenga que conocer los detalles de implementación de cada estrategia.
 
+El patrón Strategy también es aplicable para manejar la lógica relacionada con los métodos de pago en Qnave. Dado que Qnave podría ofrecer múltiples formas de pago a sus usuarios, como tarjetas de crédito, PayPal, transferencias bancarias, o incluso pagos en efectivo, el patrón Strategy permitiría implementar y gestionar estas diferentes opciones de manera flexible y modular.
+
+![D](./img/PatronStrategy.png)
 
