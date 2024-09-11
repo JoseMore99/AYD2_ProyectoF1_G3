@@ -1,16 +1,28 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const { syncDB } = require('./sync'); // Asegúrate de importar syncDB correctamente
+
 const app = express();
-const port = 3000;
-require('dotenv').config();
-app.use(cors())
+
+app.use(cors());
+app.use(express.json());
+
+// Definir rutas aquí
 
 // Ruta de saludo
 app.get('/', (req, res) => {
   res.json({status: "OK"});
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Listen on port ${port}`);
-});
+const startServer = async () => {
+  try {
+    await syncDB(); // Llama a la función para sincronizar la base de datos
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Servidor escuchando en el puerto ${process.env.PORT || 3000}`);
+    });
+  } catch (error) {
+    console.error('Failed to sync DB or start server:', error);
+  }
+};
+
+startServer();
