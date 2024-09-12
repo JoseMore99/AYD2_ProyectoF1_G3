@@ -12,6 +12,7 @@ const Role = sequelize.define('Role', {
     allowNull: false
   }
 }, {
+  tableName: 'Roles',
   timestamps: false
 });
 

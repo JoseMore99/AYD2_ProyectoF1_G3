@@ -17,6 +17,7 @@ const Calificacion = sequelize.define('Calificacion', {
     allowNull: true
   }
 }, {
+  tableName: 'Calificaciones',
   timestamps: false
 });
 

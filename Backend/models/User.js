@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); 
-const Role = require('./Role');
-const Direccion = require('./Direccion');
-const Vehiculo = require('./Vehiculo');
+const bcrypt = require('bcryptjs');
 
 const User = sequelize.define('User', {
   id: {
@@ -42,8 +40,43 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.NOW
   }
 }, {
-  tableName: 'users',
+  tableName: 'Users',
   timestamps: false
+});
+
+// Método para crear un nuevo usuario
+User.createUser = async function(correo, nombre_completo, numero_telefono, fecha_nacimiento, genero, password) {
+  try {
+    // Verifica si el usuario ya existe
+    let user = await this.findOne({ where: { correo } });
+    if (user) {
+      throw new Error('Usuario ya existe');
+    }
+
+    // Encripta la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Crea el nuevo usuario
+    user = await this.create({
+      correo,
+      nombre_completo,
+      numero_telefono,
+      fecha_nacimiento,
+      genero,
+      password: hashedPassword
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// Método para encriptar la contraseña antes de guardar el usuario
+User.beforeSave(async (user) => {
+  if (user.password) {
+    user.password = await bcrypt.hash(user.password, 10);
+  }
 });
 
 module.exports = User;
