@@ -28,6 +28,7 @@ const MetodoPago = sequelize.define('MetodoPago', {
     allowNull: false
   }
 }, {
+  tableName: 'MetodosPagos',
   timestamps: false
 });
 

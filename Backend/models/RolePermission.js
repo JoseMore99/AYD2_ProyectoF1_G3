@@ -19,6 +19,7 @@ const RolePermission = sequelize.define('RolePermission', {
     primaryKey: true
   }
 }, {
+  tableName: 'RolesPermissions',
   timestamps: false
 });
 

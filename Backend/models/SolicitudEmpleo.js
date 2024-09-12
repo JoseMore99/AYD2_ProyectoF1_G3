@@ -16,6 +16,7 @@ const SolicitudEmpleo = sequelize.define('SolicitudEmpleo', {
     defaultValue: DataTypes.NOW
   }
 }, {
+  tableName: 'SolicitudEmpleos',
   timestamps: false
 });
 
