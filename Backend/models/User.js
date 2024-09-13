@@ -72,11 +72,4 @@ User.createUser = async function(correo, nombre_completo, numero_telefono, fecha
   }
 };
 
-// Método para encriptar la contraseña antes de guardar el usuario
-User.beforeSave(async (user) => {
-  if (user.password) {
-    user.password = await bcrypt.hash(user.password, 10);
-  }
-});
-
 module.exports = User;

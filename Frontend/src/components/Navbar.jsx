@@ -1,13 +1,23 @@
 import React from 'react';
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn, userName }) => {
+  const truncatedName = userName.length > 8 ? `${userName.substring(0, 8)}...` : userName;
+
   return (
     <nav className="navbar navbar-dark bg-dark" style={{ marginTop: '0' }}>
       <div className="container-fluid">
         <a className="navbar-brand" href="/">Q-NAVI</a>
         <div className="d-flex">
-          <a className="btn btn-outline-light me-2" href="#">Crear Cuenta</a>
-          <a className="btn btn-outline-light" href="#">Ingresar</a>
+          {isLoggedIn ? (
+            <>
+              <span className="nav-text text-white me-3">Hola: {truncatedName}</span>
+              <a className="nav-link text-white" href="/logout">Cerrar Sesión</a>
+            </>
+          ) : (
+            <>
+              <a className="nav-link text-white" href="/register">Crear Cuenta</a>             
+            </>
+          )}
         </div>
       </div>
     </nav>
