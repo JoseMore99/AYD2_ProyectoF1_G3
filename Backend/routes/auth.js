@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
+const Role = require('../models/Role'); // Importa el modelo de Role
 require('dotenv').config();
 
 
@@ -20,14 +21,18 @@ router.post('/login', [
 
   const { correo, password } = req.body;
   try {
-    // Verifica si el usuario existe
-    let user = await User.findOne({ where: { correo } });
+    // Verifica si el usuario existe, incluyendo sus roles
+    let user = await User.findOne({
+      where: { correo },
+      include: [{ model: Role, attributes: ['role_name'], through: { attributes: [] } }]
+    });
+    
     if (!user) {
-      return res.status(400).json({ msg: 'Usuario incorrectos' });
+      return res.status(400).json({ msg: 'Usuario incorrecto' });
     }
 
     // Verifica el password con bcrypt.compare
-    console.log(user.password,"recibo"+ password);
+    console.log(user.password,"recibo->"+ password);
     const isMatch = await bcrypt.compare(password, user.password); // Asegúrate de que la columna de contraseña se llame "password"
     if (!isMatch) {
       return res.status(400).json({ msg: 'Contraseña incorrectos' });
@@ -37,13 +42,14 @@ router.post('/login', [
     const payload = {
       user: {
         id: user.id,
-        correo: user.correo
+        correo: user.correo,
+        roles: user.Roles.map(role => role.role_name) // Incluye todos los roles del usuario en el token
       }
     };
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token , roles: user.Roles[0].role_name, correo }); // Devuelve el token y el primer rol del usuario
     });
 
   } catch (err) {

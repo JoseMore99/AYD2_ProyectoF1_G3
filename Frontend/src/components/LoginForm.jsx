@@ -1,13 +1,59 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Logica de login
-    console.log('Correo:', email, 'Contraseña:', password);
+  const handleLogin = async (email, password) => {
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ correo: email, password })
+      });
+
+      const data = await res.json();
+
+      if (data.token) {
+        console.log('Token:', data.token);
+        
+        localStorage.setItem('token', data.token);
+        // Guardar el correo en localStorage
+        localStorage.setItem('correo', data.correo);
+        
+        // Usar el campo 'roles' directamente desde la respuesta
+        const roles = data.roles ? [data.roles] : []; // Convertir roles a array
+
+        localStorage.setItem('roles', JSON.stringify(roles));
+
+        
+
+
+        console.log('Roles:', roles);
+        if (roles.includes('Administrador')) {
+          navigate('/admin');
+        } else if (roles.includes('Conductor')) {
+          navigate('/driver');
+        } else if (roles.includes('Asistente')) {
+          navigate('/asistente');
+        } else {
+          navigate('/profile');
+        }
+      } else {
+        console.error('Login fallido');
+      }
+    } catch (err) {
+      console.error('Error durante el login', err);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(email, password);
   };
 
   return (
