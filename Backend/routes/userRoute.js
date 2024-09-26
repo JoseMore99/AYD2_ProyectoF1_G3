@@ -111,41 +111,45 @@ router.post('/reportar-problema', verificarToken, [
   }
 });
 
-router.put('/cancelar-viaje', async (req, res) => {
-  const { idViaje, idUsuario, idConductor } = req.body;  // Obtener el ID del viaje de los parámetros de la URL
-
+router.put('/cancelar-viaje', verificarToken, async (req, res) => {
+  const { idViaje } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  console.log(req.user.user)
   try {
-    var viaje= null
+    var viaje = null
     if (idViaje) {
       viaje = await Viaje.findByPk(idViaje);  // Buscar el viaje por su ID
 
       if (!viaje) {
         return res.status(404).json({ msg: `El viaje con ID ${idViaje} no existe.` });
       }
-    } else if (idUsuario) {
+    } else if (req.user.user.roles[0]=='Usuario') {
       viaje = await Viaje.findOne({
         where: {
-          id_usuario: idUsuario,
+          id_usuario: req.user.user.id,
           estado: ['pendiente', 'en curso']
         }
       });
       if (!viaje) {
-        return res.status(404).json({ msg: `El viaje con ID ${idUsuario} no existe.` });
+        return res.status(404).json({ msg: `El viaje con ID ${req.user.user.id} no existe.` });
       }
 
-    }else if (idConductor) {
+    } else if (req.user.user.roles[0]=='Conductor') {
       viaje = await Viaje.findOne({
         where: {
-          id_conductor: idConductor,
+          id_conductor: 3,
           estado: ['pendiente', 'en curso']
         }
       });
       if (!viaje) {
-        return res.status(404).json({ msg: `El viaje con ID ${idConductor} no existe.` });
+        return res.status(404).json({ msg: `El viaje con ID ${req.user.user.id} no existe.` });
       }
 
     }
-    if (!viaje){
+    if (!viaje) {
       return res.status(404).json({ msg: `El viaje no encont5rado.` });
     }
 
