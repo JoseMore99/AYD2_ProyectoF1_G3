@@ -21,9 +21,9 @@ const Vehiculo = sequelize.define('Vehiculo', {
   numero_placa: {
     type: DataTypes.STRING(20),
     allowNull: false,
-    unique: true
+   // unique: true
   },
-  fotografia_vehiculo: {
+  foto_vehiculo: {
     type: DataTypes.BLOB('long')
   },
   id_conductor: {

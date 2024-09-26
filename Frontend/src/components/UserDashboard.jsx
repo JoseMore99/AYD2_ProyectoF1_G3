@@ -1,8 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProfileActionCard from './ProfileActionCard';
 import ButtonNewTrip from './ButtonNewTrip';
 
 function UserDashboard() {
+  const navigate = useNavigate();  // Inicializar el hook useNavigate
+
+  const handleJobApplication = () => {
+    navigate('/user/solicitar-empleo');  // Redirigir a la ruta del formulario de empleo
+  };
+
+  const handleViewJobApplications = () => {
+    navigate('/user/ver-solicitudes');  // Redirigir a la ruta de ver solicitudes
+  };
+
   return (
     <div className="container my-5">
       <h2 className="text-center">Dashboard del Usuario</h2>
@@ -16,7 +27,13 @@ function UserDashboard() {
         </div>
       </div>
       <div className="d-flex justify-content-center mt-4">
-      <ButtonNewTrip iconClass="bi-car-front" cardText="Solicita nuevo viaje" buttonText="Nuevo viaje" redirectTo="/nuevo-viaje" />
+        <ButtonNewTrip iconClass="bi-car-front" cardText="Solicita nuevo viaje" buttonText="Nuevo viaje" redirectTo="/nuevo-viaje" />
+      </div>
+      <div className="d-flex justify-content-center mt-4">
+        <button className="btn btn-primary" onClick={handleJobApplication}>Solicitar Empleo como Conductor</button>
+      </div>
+      <div className="d-flex justify-content-center mt-4">
+        <button className="btn btn-secondary" onClick={handleViewJobApplications}>Ver mis Solicitudes</button>
       </div>
     </div>
   );
