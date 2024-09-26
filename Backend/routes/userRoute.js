@@ -134,7 +134,7 @@ router.put('/cancelar-viaje', verificarToken, async (req, res) => {
         }
       });
       if (!viaje) {
-        return res.status(404).json({ msg: `El viaje con ID ${req.user.user.id} no existe.` });
+        return res.status(404).json({ msg: `El viaje con para el usuario con ID ${req.user.user.id} no existe.` });
       }
 
     } else if (req.user.user.roles[0]=='Conductor') {
@@ -145,7 +145,7 @@ router.put('/cancelar-viaje', verificarToken, async (req, res) => {
         }
       });
       if (!viaje) {
-        return res.status(404).json({ msg: `El viaje con ID ${req.user.user.id} no existe.` });
+        return res.status(404).json({ msg: `El viaje para el conductor con ID ${req.user.user.id} no existe.` });
       }
 
     }
