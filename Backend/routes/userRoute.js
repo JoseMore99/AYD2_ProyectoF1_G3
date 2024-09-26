@@ -110,7 +110,7 @@ router.post('/reportar-problema', verificarToken, [
 });
 
 router.get('/user-info', async (req, res) => {
-  const { idUser, emailUser } = req.body;
+  const { idUser, emailUser } = req.query;
   try {
     if (idUser == -1) {
       const usuario = await User.findOne({ where: { correo: emailUser } });

@@ -7,6 +7,7 @@ import AsistenProfile from '../views/AsistenProfile';
 import AdminProfile from '../views/AdminProfile';
 import PrivateRoute from './PrivateRoute';
 import ReportarProblema from '../views/user/ReportaProblema';
+import VerInfoUser from '../views/driver/VerInfoUser';
 
 export const AppRouter = () => {
   return (
@@ -20,6 +21,7 @@ export const AppRouter = () => {
           </PrivateRoute>
         } />
         <Route path="/reporta-inconveniente" element={<ReportarProblema />} />
+        <Route path="/get-info-user" element={<VerInfoUser />} />
         <Route path="/driver" element={
           <PrivateRoute role="Conductor">
             <DriverProfile />
