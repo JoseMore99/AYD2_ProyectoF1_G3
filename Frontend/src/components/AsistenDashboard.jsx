@@ -16,9 +16,12 @@ function AsistenDashboard() {
           <ProfileActionCard iconClass="bi-graph-up" title="Reportes" description="Genera y visualiza reportes" route="/reportes" />
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-4">
+      {
+        /* <div className="d-flex justify-content-center mt-4">
         <ButtonNewTrip iconClass="bi-car-front" cardText="Aceptar solicitudes" buttonText="Solicitudes" redirectTo="/solicitudes" />
-      </div>
+      </div> */
+      }
+      
     </div>
   );
 }
