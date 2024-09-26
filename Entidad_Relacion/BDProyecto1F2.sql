@@ -93,7 +93,7 @@ CREATE TABLE Viajes (
     id_tarifa INT NOT NULL,
     punto_partida INT NOT NULL,
     punto_llegada INT NOT NULL,
-    estado ENUM('pendiente', 'en curso', 'finalizado') DEFAULT 'pendiente',
+    estado ENUM('pendiente', 'en curso', 'finalizado','cancelado') DEFAULT 'pendiente',
     fecha_hora_inicio TIMESTAMP NOT NULL,
     fecha_hora_fin TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES Users(id),
