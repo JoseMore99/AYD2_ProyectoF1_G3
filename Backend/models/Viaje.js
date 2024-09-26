@@ -48,7 +48,7 @@ const Viaje = sequelize.define('Viaje', {
     }
   },
   estado: {
-    type: DataTypes.ENUM('pendiente', 'en curso', 'finalizado', 'cancelado'),
+    type: DataTypes.ENUM('pendiente', 'en curso', 'finalizado','cancelado'),
     allowNull: false,
     defaultValue: 'pendiente'
   },

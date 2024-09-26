@@ -6,6 +6,7 @@ const Role = require('../models/Role'); // Importa Role correctamente
 const UserRole = require('../models/UserRole'); // Asegúrate de importar UserRole
 const Reporte = require('../models/Reporte')
 const jwt = require('jsonwebtoken');
+const Viaje = require('../models/Viaje');
 require('dotenv').config();
 
 const router = express.Router();
@@ -15,7 +16,7 @@ function verificarToken(req, res, next) {
   if (!token) {
     return res.status(403).send('Token no proporcionado');
   }
-  const secretKey =  process.env.JWT_SECRET; 
+  const secretKey = process.env.JWT_SECRET;
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       return res.status(401).send('Token no válido o expirado');
@@ -65,7 +66,7 @@ router.post('/create-user', [
   }
 });
 
-router.post('/reportar-problema',verificarToken, [
+router.post('/reportar-problema', verificarToken, [
   check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
   check('fecha', 'La fecha es obligatoria').isDate()
 ], async (req, res) => {
@@ -73,7 +74,7 @@ router.post('/reportar-problema',verificarToken, [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { idReportado,nombreReportado, descripcion, fecha, tipo } = req.body;
+  const { idReportado, nombreReportado, descripcion, fecha, tipo } = req.body;
 
   try {
     console.log(req.user.user.correo)
@@ -81,13 +82,13 @@ router.post('/reportar-problema',verificarToken, [
     if (!reportante) {
       return res.status(500).send('Usuario no encontrado');
     }
-    var idConductor=idReportado
-    if (idConductor==null){
-      const reportado = await User.findOne({ where:  { nombre_completo: nombreReportado } });
+    var idConductor = idReportado
+    if (idConductor == null) {
+      const reportado = await User.findOne({ where: { nombre_completo: nombreReportado } });
       if (!reportado) {
-        idConductor=0
-      }else{
-        idConductor=reportado.id
+        idConductor = 0
+      } else {
+        idConductor = reportado.id
       }
     }
 
@@ -96,8 +97,8 @@ router.post('/reportar-problema',verificarToken, [
       id_reporteado: idConductor,
       descripcion: descripcion,
       fecha: fecha,
-      tipo: tipo 
-    }); 
+      tipo: tipo
+    });
 
     res.status(201).json({ msg: 'Reporte de problema creado exitosamente', nuevoReporte });
 
@@ -110,6 +111,54 @@ router.post('/reportar-problema',verificarToken, [
   }
 });
 
+router.put('/cancelar-viaje', async (req, res) => {
+  const { idViaje, idUsuario, idConductor } = req.body;  // Obtener el ID del viaje de los parámetros de la URL
 
+  try {
+    var viaje= null
+    if (idViaje) {
+      viaje = await Viaje.findByPk(idViaje);  // Buscar el viaje por su ID
+
+      if (!viaje) {
+        return res.status(404).json({ msg: `El viaje con ID ${idViaje} no existe.` });
+      }
+    } else if (idUsuario) {
+      viaje = await Viaje.findOne({
+        where: {
+          id_usuario: idUsuario,
+          estado: ['pendiente', 'en curso']
+        }
+      });
+      if (!viaje) {
+        return res.status(404).json({ msg: `El viaje con ID ${idUsuario} no existe.` });
+      }
+
+    }else if (idConductor) {
+      viaje = await Viaje.findOne({
+        where: {
+          id_conductor: idConductor,
+          estado: ['pendiente', 'en curso']
+        }
+      });
+      if (!viaje) {
+        return res.status(404).json({ msg: `El viaje con ID ${idConductor} no existe.` });
+      }
+
+    }
+    if (!viaje){
+      return res.status(404).json({ msg: `El viaje no encont5rado.` });
+    }
+
+    viaje.estado = 'cancelado';
+    viaje.fecha_hora_fin = new Date();
+
+    await viaje.save();
+
+    res.status(200).json({ msg: `El viaje ha sido cancelado correctamente.`, viaje });
+  } catch (error) {
+    console.error('Error al cancelar el viaje:', error);
+    res.status(500).json({ msg: 'Error al cancelar el viaje.', error: error.message });
+  }
+});
 
 module.exports = router;
