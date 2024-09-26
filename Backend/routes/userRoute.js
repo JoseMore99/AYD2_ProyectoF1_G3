@@ -15,7 +15,7 @@ function verificarToken(req, res, next) {
   if (!token) {
     return res.status(403).send('Token no proporcionado');
   }
-  const secretKey =  process.env.JWT_SECRET; 
+  const secretKey = process.env.JWT_SECRET;
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
       return res.status(401).send('Token no válido o expirado');
@@ -65,7 +65,7 @@ router.post('/create-user', [
   }
 });
 
-router.post('/reportar-problema',verificarToken, [
+router.post('/reportar-problema', verificarToken, [
   check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
   check('fecha', 'La fecha es obligatoria').isDate()
 ], async (req, res) => {
@@ -73,21 +73,20 @@ router.post('/reportar-problema',verificarToken, [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { idReportado,nombreReportado, descripcion, fecha, tipo } = req.body;
+  const { idReportado, nombreReportado, descripcion, fecha, tipo } = req.body;
 
   try {
-    console.log(req.user.user.correo)
     const reportante = await User.findOne({ where: { correo: req.user.user.correo } });
     if (!reportante) {
       return res.status(500).send('Usuario no encontrado');
     }
-    var idConductor=idReportado
-    if (idConductor==null){
-      const reportado = await User.findOne({ where:  { nombre_completo: nombreReportado } });
+    var idConductor = idReportado
+    if (idConductor == null) {
+      const reportado = await User.findOne({ where: { nombre_completo: nombreReportado } });
       if (!reportado) {
-        idConductor=0
-      }else{
-        idConductor=reportado.id
+        idConductor = 0
+      } else {
+        idConductor = reportado.id
       }
     }
 
@@ -96,8 +95,8 @@ router.post('/reportar-problema',verificarToken, [
       id_reporteado: idConductor,
       descripcion: descripcion,
       fecha: fecha,
-      tipo: tipo 
-    }); 
+      tipo: tipo
+    });
 
     res.status(201).json({ msg: 'Reporte de problema creado exitosamente', nuevoReporte });
 
@@ -106,6 +105,30 @@ router.post('/reportar-problema',verificarToken, [
     // Envía una respuesta solo si no se ha enviado ya una
     if (!res.headersSent) {
       res.status(500).send('Error al reportar un problema');
+    }
+  }
+});
+
+router.get('/user-info', async (req, res) => {
+  const { idUser, emailUser } = req.body;
+  try {
+    if (idUser == -1) {
+      const usuario = await User.findOne({ where: { correo: emailUser } });
+      if (!usuario) {
+        return res.status(500).send('Usuario no encontrado');
+      }
+      return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
+
+    }
+    const usuario = await User.findOne({ where: { id: idUser } });
+    if (!usuario) {
+      return res.status(500).send('Usuario no encontrado');
+    }
+    return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
+  } catch (error) {
+    // Envía una respuesta solo si no se ha enviado ya una
+    if (!res.headersSent) {
+      res.status(500).send('Error al buscar info de usuario');
     }
   }
 });
