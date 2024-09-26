@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar visibilidad de la contraseña
   const navigate = useNavigate();
 
   const handleLogin = async (email, password) => {
@@ -20,18 +21,11 @@ const LoginForm = () => {
 
       if (data.token) {
         console.log('Token:', data.token);
-        
         localStorage.setItem('token', data.token);
-        // Guardar el correo en localStorage
         localStorage.setItem('correo', data.correo);
         
-        // Usar el campo 'roles' directamente desde la respuesta
-        const roles = data.roles ? [data.roles] : []; // Convertir roles a array
-
+        const roles = data.roles ? [data.roles] : [];
         localStorage.setItem('roles', JSON.stringify(roles));
-
-        
-
 
         console.log('Roles:', roles);
         if (roles.includes('Administrador')) {
@@ -73,14 +67,23 @@ const LoginForm = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Contraseña</label>
-          <input 
-            type="password" 
-            className="form-control" 
-            id="password" 
-            placeholder="Ingresa tu contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} 
-          />
+          <div className="input-group">
+            <input 
+              type={showPassword ? 'text' : 'password'}  // Alterna entre 'text' y 'password'
+              className="form-control" 
+              id="password" 
+              placeholder="Ingresa tu contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            <button 
+              type="button" 
+              className="btn btn-outline-secondary" 
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
         </div>
         <button type="submit" className="btn btn-primary w-100">Ingresar a mi cuenta</button>
       </form>
@@ -89,6 +92,6 @@ const LoginForm = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LoginForm;

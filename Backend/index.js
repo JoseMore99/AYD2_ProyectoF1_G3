@@ -4,7 +4,10 @@ const { syncDB } = require('./sync');
 const protectedRoutes = require('./routes/protected');
 const authRoutes = require('./routes/auth');
 const verifyToken = require('./middleware/auth');
-const userRoutes = require('./routes/userRoute');
+const userRoutes = require('./routes/userRoute'); 
+const driverRequests = require('./routes/driverRequests');
+const userRequests = require('./routes/userRequests'); 
+const jobApplications = require('./routes/jobApplications');
 
 const app = express();
 
@@ -21,6 +24,15 @@ app.use('/api/auth', authRoutes);
 
 // Rutas para crear un nuevo usuario (no protegidas por autenticación)
 app.use('/userRoute', userRoutes);
+
+// Ruta para solicitudes de conductores
+app.use('/api/driverRequests', driverRequests);
+
+// Ruta para las solicitudes de empleo del usuario
+app.use('/user', userRequests);  
+
+// Ruta para las solicitudes de empleo
+app.use('/api', jobApplications);
 
 // Rutas protegidas (requieren autenticación)
 app.use('/api', verifyToken, protectedRoutes);
