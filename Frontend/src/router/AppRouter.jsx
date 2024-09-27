@@ -8,27 +8,32 @@ import AdminProfile from '../views/AdminProfile';
 import PrivateRoute from './PrivateRoute';
 import ReportarProblema from '../views/user/ReportaProblema';
 import DriverApplicationForm from '../components/DriverApplicationForm';
-import JobApplicationList  from '../components/JobApplicationList';
+import JobApplicationList from '../components/JobApplicationList';
 import SolicitudesConductor from '../components/SolicitudesConductor';
 import SolicitudDetalles from '../components/SolicitudDetalles'
 import NuevoViaje from '../components/NuevoViaje';
 import TripList from '../components/TripList';
 import VerInfoUser from '../views/driver/VerInfoUser';
+import FinalizarViaje from '../components/FinalizarViaje';
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Principal />} />
-        
+
         <Route path="/profile" element={
           <PrivateRoute role="Usuario">
             <UserProfile />
           </PrivateRoute>
         } />
-        <Route path="/reporta-inconveniente" element={<ReportarProblema />} />
-         
-         <Route path="/user/solicitar-empleo" element={
+        <Route path="/reporta-inconveniente" element={
+          <PrivateRoute role="Usuario">
+            <ReportarProblema />
+          </PrivateRoute>
+        } />
+
+        <Route path="/user/solicitar-empleo" element={
           <PrivateRoute role="Usuario">
             <DriverApplicationForm />
           </PrivateRoute>
@@ -42,11 +47,16 @@ export const AppRouter = () => {
 
         <Route path="/user/ver-solicitudes" element={
           <PrivateRoute role="Usuario">
-            <JobApplicationList  />
+            <JobApplicationList />
           </PrivateRoute>
         } />
 
-        <Route path="/get-info-user" element={<VerInfoUser />} />
+        <Route path="/get-info-user" element={
+          <PrivateRoute role="Conductor">
+            <VerInfoUser />
+          </PrivateRoute>
+        } />
+
         <Route path="/driver" element={
           <PrivateRoute role="Conductor">
             <DriverProfile />
@@ -56,6 +66,12 @@ export const AppRouter = () => {
         <Route path="/driver/nuevo-viaje" element={
           <PrivateRoute role="Conductor">
             <TripList />
+          </PrivateRoute>
+        } />
+        
+        <Route path="/driver/finalizar-viaje" element={
+          <PrivateRoute role="Conductor">
+            <FinalizarViaje />
           </PrivateRoute>
         } />
 
@@ -71,7 +87,7 @@ export const AppRouter = () => {
           </PrivateRoute>
         } />
 
-         {/* Nueva ruta para ver los detalles de una solicitud */}
+        {/* Nueva ruta para ver los detalles de una solicitud */}
         <Route path="/solicitudes/:id" element={
           <PrivateRoute role="Asistente">
             <SolicitudDetalles />
@@ -84,10 +100,10 @@ export const AppRouter = () => {
           </PrivateRoute>
         } />
 
-         {/* Ruta "catch-all" para redirigir a la página principal si la ruta no existe */}
-         <Route path="*" element={<Navigate to="/" />} />
+        {/* Ruta "catch-all" para redirigir a la página principal si la ruta no existe */}
+        <Route path="*" element={<Navigate to="/" />} />
 
-        
+
       </Routes>
     </BrowserRouter>
   );

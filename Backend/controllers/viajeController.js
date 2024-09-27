@@ -1,4 +1,4 @@
-const { Op } = require('sequelize'); 
+const { Op } = require('sequelize');
 const User = require('../models/User');
 const Viaje = require('../models/Viaje');
 const Tarifa = require('../models/Tarifa');
@@ -21,7 +21,7 @@ const createViaje = async (req, res) => {
 
     const nuevoViaje = await Viaje.create({
       id_usuario: usuario.id,
-      id_conductor: null, 
+      id_conductor: null,
       id_tarifa: tarifa.id_tarifa,
       punto_partida,
       punto_llegada,
@@ -90,6 +90,32 @@ const getViajesActivos = async (req, res) => {
   }
 };
 
+// Obtener viajes activos (pendientes)
+const getViajesEnCurso = async (req, res) => {
+  try {
+    const viajeEnCurso = await Viaje.findAll({
+      where: {
+        estado: 'en curso',
+        id_conductor: req.user.id,
+      },
+      include: [
+        { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
+        { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
+        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
+        { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] }
+      ]
+    });
+
+    if (viajeEnCurso.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron viajes en curso' });
+    }
+
+    res.json({ trips: viajeEnCurso });
+  } catch (error) {
+    console.error('Error al obtener los viajes en curso:', error);
+    res.status(500).json({ message: 'Error al obtener los viajes en curso' });
+  }
+};
 
 
 // Aceptar un viaje
@@ -122,7 +148,7 @@ const aceptarViaje = async (req, res) => {
 // Obtener puntos de partida
 const getPuntosPartida = async (req, res) => {
   try {
-    const puntosPartida = await Direccion.findAll();  
+    const puntosPartida = await Direccion.findAll();
     res.status(200).json(puntosPartida);
   } catch (error) {
     console.error('Error al obtener puntos de partida:', error);
@@ -184,6 +210,33 @@ const getTarifa = async (req, res) => {
   }
 };
 
+// Aceptar un viaje
+const finalizarViaje = async (req, res) => {
+  const { id_viaje } = req.params;
+  const conductorId = req.user.id;
+
+  try {
+    const viaje = await Viaje.findOne({ where: { id_viaje } });
+
+    if (!viaje) {
+      return res.status(404).json({ success: false, message: 'Viaje no encontrado' });
+    }
+
+    if (viaje.estado !== 'en curso') {
+      return res.status(400).json({ success: false, message: 'El viaje no inicio o esta cancelado' });
+    }
+
+    viaje.id_conductor = conductorId;
+    viaje.estado = 'finalizado';
+    await viaje.save();
+
+    res.json({ success: true, message: 'Viaje finalizado con éxito' });
+  } catch (error) {
+    console.error('Error al finalizar el viaje:', error);
+    res.status(500).json({ success: false, message: 'Error al finalizar el viaje' });
+  }
+};
+
 module.exports = {
   createViaje,
   updateEstadoViaje,
@@ -192,4 +245,6 @@ module.exports = {
   getPuntosPartida,
   getPuntosLlegada,
   getTarifa,
+  finalizarViaje,
+  getViajesEnCurso
 };
