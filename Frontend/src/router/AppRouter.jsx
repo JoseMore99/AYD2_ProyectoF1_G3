@@ -13,6 +13,7 @@ import SolicitudesConductor from '../components/SolicitudesConductor';
 import SolicitudDetalles from '../components/SolicitudDetalles'
 import NuevoViaje from '../components/NuevoViaje';
 import TripList from '../components/TripList';
+import VerInfoUser from '../views/driver/VerInfoUser';
 
 export const AppRouter = () => {
   return (
@@ -45,6 +46,7 @@ export const AppRouter = () => {
           </PrivateRoute>
         } />
 
+        <Route path="/get-info-user" element={<VerInfoUser />} />
         <Route path="/driver" element={
           <PrivateRoute role="Conductor">
             <DriverProfile />

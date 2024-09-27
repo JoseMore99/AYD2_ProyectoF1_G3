@@ -77,7 +77,6 @@ router.post('/reportar-problema', verificarToken, [
   const { idReportado, nombreReportado, descripcion, fecha, tipo } = req.body;
 
   try {
-    console.log(req.user.user.correo)
     const reportante = await User.findOne({ where: { correo: req.user.user.correo } });
     if (!reportante) {
       return res.status(500).send('Usuario no encontrado');
@@ -122,7 +121,6 @@ router.put('/cancelar-viaje', verificarToken, async (req, res) => {
     var viaje = null
     if (idViaje) {
       viaje = await Viaje.findByPk(idViaje);  // Buscar el viaje por su ID
-
       if (!viaje) {
         return res.status(404).json({ msg: `El viaje con ID ${idViaje} no existe.` });
       }
@@ -162,6 +160,30 @@ router.put('/cancelar-viaje', verificarToken, async (req, res) => {
   } catch (error) {
     console.error('Error al cancelar el viaje:', error);
     res.status(500).json({ msg: 'Error al cancelar el viaje.', error: error.message });
+  }
+});
+
+router.get('/user-info', async (req, res) => {
+  const { idUser, emailUser } = req.query;
+  try {
+    if (idUser == -1) {
+      const usuario = await User.findOne({ where: { correo: emailUser } });
+      if (!usuario) {
+        return res.status(500).send('Usuario no encontrado');
+      }
+      return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
+
+    }
+    const usuario = await User.findOne({ where: { id: idUser } });
+    if (!usuario) {
+      return res.status(500).send('Usuario no encontrado');
+    }
+    return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
+  } catch (error) {
+    // Envía una respuesta solo si no se ha enviado ya una
+    if (!res.headersSent) {
+      res.status(500).send('Error al buscar info de usuario');
+    }
   }
 });
 
