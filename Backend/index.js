@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoute');
 const driverRequests = require('./routes/driverRequests');
 const userRequests = require('./routes/userRequests'); 
 const jobApplications = require('./routes/jobApplications');
+const viajeRoutes = require('./routes/viajeRoutes');
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.use('/user', userRequests);
 
 // Ruta para las solicitudes de empleo
 app.use('/api', jobApplications);
+
+// Rutas para solicitar y actualizar viajes
+app.use('/api', viajeRoutes);
 
 // Rutas protegidas (requieren autenticación)
 app.use('/api', verifyToken, protectedRoutes);

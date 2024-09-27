@@ -17,7 +17,7 @@ const Viaje = sequelize.define('Viaje', {
   },
   id_conductor: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: {
       model: 'Users', // nombre de la tabla de usuarios
       key: 'id'

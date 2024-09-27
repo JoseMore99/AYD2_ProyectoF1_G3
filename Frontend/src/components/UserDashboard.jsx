@@ -27,7 +27,7 @@ function UserDashboard() {
         </div>
       </div>
       <div className="d-flex justify-content-center mt-4">
-        <ButtonNewTrip iconClass="bi-car-front" cardText="Solicita nuevo viaje" buttonText="Nuevo viaje" redirectTo="/nuevo-viaje" />
+        <ButtonNewTrip iconClass="bi-car-front" cardText="Solicita nuevo viaje" buttonText="Nuevo viaje" redirectTo="/user/nuevo-viaje" />
       </div>
       <div className="d-flex justify-content-center mt-4">
         <button className="btn btn-primary" onClick={handleJobApplication}>Solicitar Empleo como Conductor</button>
