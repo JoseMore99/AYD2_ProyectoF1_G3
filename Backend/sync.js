@@ -63,6 +63,16 @@ Reporte.belongsTo(User, { foreignKey: 'id_conductor' });
 User.hasMany(SolicitudEmpleo, { foreignKey: 'id_conductor' });
 SolicitudEmpleo.belongsTo(User, { foreignKey: 'id_conductor' });
 
+// Relación de Viaje con Usuario (creador del viaje y conductor)
+Viaje.belongsTo(User, { as: 'usuario', foreignKey: 'id_usuario' });
+Viaje.belongsTo(User, { as: 'conductor', foreignKey: 'id_conductor' });
+Viaje.belongsTo(Tarifa, { as: 'tarifa', foreignKey: 'id_tarifa' });
+
+// Relación con Direccion para punto de partida y llegada
+Viaje.belongsTo(Direccion, { as: 'direccionPartida', foreignKey: 'punto_partida' });
+Viaje.belongsTo(Direccion, { as: 'direccionLlegada', foreignKey: 'punto_llegada' });
+
+
 // Sincronizar base de datos
 const syncDB = async () => {
   try {

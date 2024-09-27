@@ -12,6 +12,7 @@ import JobApplicationList  from '../components/JobApplicationList';
 import SolicitudesConductor from '../components/SolicitudesConductor';
 import SolicitudDetalles from '../components/SolicitudDetalles'
 import NuevoViaje from '../components/NuevoViaje';
+import TripList from '../components/TripList';
 
 export const AppRouter = () => {
   return (
@@ -47,6 +48,12 @@ export const AppRouter = () => {
         <Route path="/driver" element={
           <PrivateRoute role="Conductor">
             <DriverProfile />
+          </PrivateRoute>
+        } />
+
+        <Route path="/driver/nuevo-viaje" element={
+          <PrivateRoute role="Conductor">
+            <TripList />
           </PrivateRoute>
         } />
 
