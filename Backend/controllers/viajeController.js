@@ -184,6 +184,33 @@ const getTarifa = async (req, res) => {
   }
 };
 
+// Aceptar un viaje
+const finalizarViaje = async (req, res) => {
+  const { id_viaje } = req.params;
+  const conductorId = req.user.id; 
+
+  try {
+    const viaje = await Viaje.findOne({ where: { id_viaje } });
+
+    if (!viaje) {
+      return res.status(404).json({ success: false, message: 'Viaje no encontrado' });
+    }
+
+    if (viaje.estado !== 'en curso') {
+      return res.status(400).json({ success: false, message: 'El viaje no inicio o esta cancelado' });
+    }
+
+    viaje.id_conductor = conductorId;
+    viaje.estado = 'finalizado';
+    await viaje.save();
+
+    res.json({ success: true, message: 'Viaje finalizado con éxito' });
+  } catch (error) {
+    console.error('Error al finalizar el viaje:', error);
+    res.status(500).json({ success: false, message: 'Error al finalizar el viaje' });
+  }
+};
+
 module.exports = {
   createViaje,
   updateEstadoViaje,
@@ -192,4 +219,5 @@ module.exports = {
   getPuntosPartida,
   getPuntosLlegada,
   getTarifa,
+  finalizarViaje,
 };

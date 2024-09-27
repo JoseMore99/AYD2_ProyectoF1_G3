@@ -7,7 +7,8 @@ const {
   aceptarViaje, 
   getPuntosPartida, 
   getPuntosLlegada, 
-  getTarifa 
+  getTarifa, 
+  finalizarViaje
 } = require('../controllers/viajeController');
 const auth = require('../middleware/auth');
 
@@ -22,6 +23,9 @@ router.get('/viajes/activos', auth, getViajesActivos);
 
 // Aceptar un viaje
 router.post('/viajes/:id_viaje/accept', auth, aceptarViaje);
+
+// Finalizar un viaje
+router.post('/viajes/:id_viaje/finish', auth, finalizarViaje);
 
 // Obtener puntos de partida
 router.get('/direcciones/partida', getPuntosPartida);
