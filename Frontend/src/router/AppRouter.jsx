@@ -14,6 +14,7 @@ import SolicitudDetalles from '../components/SolicitudDetalles'
 import NuevoViaje from '../components/NuevoViaje';
 import TripList from '../components/TripList';
 import VerInfoUser from '../views/driver/VerInfoUser';
+import FinalizarViaje from '../components/FinalizarViaje';
 
 export const AppRouter = () => {
   return (
@@ -65,6 +66,12 @@ export const AppRouter = () => {
         <Route path="/driver/nuevo-viaje" element={
           <PrivateRoute role="Conductor">
             <TripList />
+          </PrivateRoute>
+        } />
+        
+        <Route path="/driver/finalizar-viaje" element={
+          <PrivateRoute role="Conductor">
+            <FinalizarViaje />
           </PrivateRoute>
         } />
 

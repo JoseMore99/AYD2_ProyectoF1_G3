@@ -8,7 +8,8 @@ const {
   getPuntosPartida, 
   getPuntosLlegada, 
   getTarifa, 
-  finalizarViaje
+  finalizarViaje,
+  getViajesEnCurso
 } = require('../controllers/viajeController');
 const auth = require('../middleware/auth');
 
@@ -20,6 +21,9 @@ router.put('/viajes/:id_viaje', updateEstadoViaje);
 
 // Obtener viajes activos
 router.get('/viajes/activos', auth, getViajesActivos);
+
+// Obtener viajes en curso
+router.get('/viajes/enCurso', auth, getViajesEnCurso);
 
 // Aceptar un viaje
 router.post('/viajes/:id_viaje/accept', auth, aceptarViaje);
