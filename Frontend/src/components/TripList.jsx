@@ -4,17 +4,18 @@ import { useNavigate } from 'react-router-dom';
 const apiUrl = 'http://localhost:3000';
 
 function TripList() {
-  const [trips, setTrips] = useState([]);
+  const [activeTrip, setActiveTrip] = useState(null); // Estado para almacenar el viaje en curso
+  const [availableTrips, setAvailableTrips] = useState([]); // Estado para los viajes disponibles
   const navigate = useNavigate();
 
   // Obtener token del localStorage
   const token = localStorage.getItem('token');
 
-  // Función para obtener los viajes activos
+  // Función para obtener los viajes en curso
   useEffect(() => {
-    async function fetchTrips() {
+    async function fetchActiveTrip() {
       try {
-        const response = await fetch(`${apiUrl}/api/viajes/activos`, {
+        const response = await fetch(`${apiUrl}/api/viajes/encurso`, {
           headers: {
             'x-auth-token': token, // Enviar el token en los headers
             'Content-Type': 'application/json',
@@ -22,17 +23,39 @@ function TripList() {
         });
 
         const data = await response.json();
-        if (data.trips) {
-          setTrips(data.trips);
+        if (data.trips && data.trips.length > 0) {
+          setActiveTrip(data.trips[0]); // Guardar el viaje en curso
         } else {
-          console.error('No se encontraron viajes activos');
+          console.log('No tienes ningún viaje en curso.');
         }
       } catch (error) {
-        console.error('Error al obtener los viajes:', error);
+        console.error('Error al obtener el viaje en curso:', error);
       }
     }
 
-    fetchTrips();
+    // Función para obtener los viajes pendientes
+    async function fetchAvailableTrips() {
+      try {
+        const response = await fetch(`${apiUrl}/api/viajes/activos`, {
+          headers: {
+            'x-auth-token': token,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+        if (data.trips) {
+          setAvailableTrips(data.trips);
+        } else {
+          console.error('No se encontraron viajes pendientes.');
+        }
+      } catch (error) {
+        console.error('Error al obtener los viajes pendientes:', error);
+      }
+    }
+
+    fetchActiveTrip();
+    fetchAvailableTrips();
   }, [token]);
 
   // Función para aceptar un viaje
@@ -41,7 +64,7 @@ function TripList() {
       const response = await fetch(`${apiUrl}/api/viajes/${tripId}/accept`, {
         method: 'POST',
         headers: {
-          'x-auth-token': token, // Enviar el token en los headers
+          'x-auth-token': token,
           'Content-Type': 'application/json',
         },
       });
@@ -49,18 +72,13 @@ function TripList() {
 
       if (data.success) {
         alert('Viaje aceptado con éxito');
-        setTrips((prevTrips) => prevTrips.filter((trip) => trip.id_viaje !== tripId)); // Remover el viaje aceptado
+        setAvailableTrips((prevTrips) => prevTrips.filter((trip) => trip.id_viaje !== tripId)); // Remover el viaje aceptado
       } else {
-        alert('El viaje ya fue aceptado por otro conductor');
+        alert(data.message);
       }
     } catch (error) {
       console.error('Error al aceptar el viaje:', error);
     }
-  };
-
-  // Función para rechazar un viaje
-  const handleReject = (tripId) => {
-    setTrips((prevTrips) => prevTrips.filter((trip) => trip.id_viaje !== tripId)); // Remover el viaje rechazado
   };
 
   // Navegar a la ruta anterior (/driver)
@@ -70,10 +88,41 @@ function TripList() {
 
   return (
     <div className="container my-5">
-      <h2 className="text-center">Aceptar Nuevo Viaje</h2>
+      <h2 className="text-center">Tus Viajes</h2>
       <div className="d-flex flex-column align-items-center">
-        {trips.length > 0 ? (
-          trips.map((trip) => (
+
+        {/* Mostrar el viaje en curso si existe */}
+        {activeTrip && (
+          <div className="card mb-3" style={{ width: '30rem', border: '2px solid green' }}>
+            <div className="row g-0">
+              <div className="col-md-4 d-flex align-items-center justify-content-center">
+                <img
+                  src="https://via.placeholder.com/100"
+                  className="img-fluid rounded-start"
+                  alt="Perfil"
+                />
+              </div>
+              <div className="col-md-8">
+                <div className="card-body">
+                  <h5 className="card-title">Viaje en curso</h5>
+                  <p className="card-text">
+                    <strong>Usuario:</strong> {activeTrip.usuario?.nombre_completo || 'No disponible'}<br />
+                    <strong>Tarifa:</strong> Q{activeTrip.tarifa?.monto || 'No disponible'}<br />
+                    <strong>Punto de partida:</strong> {activeTrip.direccionPartida?.descripcion || 'No disponible'}<br />
+                    <strong>Punto de llegada:</strong> {activeTrip.direccionLlegada?.descripcion || 'No disponible'}<br />
+                    <strong>Estado:</strong> {activeTrip.estado}<br />
+                    <strong>Fecha de inicio:</strong> {new Date(activeTrip.fecha_hora_inicio).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mostrar los viajes pendientes */}
+        <h3 className="text-center mt-4">Viajes Disponibles</h3>
+        {availableTrips.length > 0 ? (
+          availableTrips.map((trip) => (
             <div key={trip.id_viaje} className="card mb-3" style={{ width: '30rem' }}>
               <div className="row g-0">
                 <div className="col-md-4 d-flex align-items-center justify-content-center">
@@ -89,8 +138,8 @@ function TripList() {
                     <p className="card-text">
                       <strong>Usuario:</strong> {trip.usuario?.nombre_completo || 'No disponible'}<br />
                       <strong>Tarifa:</strong> Q{trip.tarifa?.monto || 'No disponible'}<br />
-                      <strong>Punto de partida:</strong> {trip.direccionPartida?.direccion || 'No disponible'}<br />
-                      <strong>Punto de llegada:</strong> {trip.direccionLlegada?.direccion || 'No disponible'}<br />
+                      <strong>Punto de partida:</strong> {trip.direccionPartida?.descripcion || 'No disponible'}<br />
+                      <strong>Punto de llegada:</strong> {trip.direccionLlegada?.descripcion || 'No disponible'}<br />
                       <strong>Estado:</strong> {trip.estado}<br />
                       <strong>Fecha de inicio:</strong> {new Date(trip.fecha_hora_inicio).toLocaleString()}
                     </p>
@@ -98,14 +147,9 @@ function TripList() {
                       <button
                         className="btn btn-success"
                         onClick={() => handleAccept(trip.id_viaje)}
+                        disabled={!!activeTrip} // Deshabilitar si hay un viaje en curso
                       >
                         Aceptar
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleReject(trip.id_viaje)}
-                      >
-                        Rechazar
                       </button>
                     </div>
                   </div>
@@ -114,7 +158,7 @@ function TripList() {
             </div>
           ))
         ) : (
-          <p>No hay viajes activos en este momento.</p>
+          <p>No hay viajes disponibles en este momento.</p>
         )}
         <button className="btn btn-secondary mt-4" onClick={handleBack}>
           Regresar

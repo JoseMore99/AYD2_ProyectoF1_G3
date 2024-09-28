@@ -17,7 +17,7 @@ function DriverDashboard() {
         </div>
       </div>
       <div className="d-flex justify-content-center mt-4">
-        <ButtonNewTrip iconClass="bi-car-front" cardText="Inicia nuevo viaje" buttonText="Nuevo viaje" redirectTo="/driver/nuevo-viaje" />
+        <ButtonNewTrip iconClass="bi-car-front" cardText="Inicia nuevo viaje" buttonText="Iniciar" redirectTo="/driver/nuevo-viaje" />
       </div>
     </div>
   );
