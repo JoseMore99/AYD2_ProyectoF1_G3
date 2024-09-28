@@ -3,19 +3,12 @@ const multer = require('multer');
 const SolicitudEmpleo = require('../models/SolicitudEmpleo');
 const User = require('../models/User');
 const Vehiculo = require('../models/Vehiculo');
+const { uploadFile } = require('../config/s3'); // Importamos la función de subir archivos a S3
 
 const router = express.Router();
 
-// Configuración de Multer para la carga de archivos
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Carpeta donde se guardarán los archivos
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + file.originalname); // Nombre del archivo
-  },
-});
-
+// Configuración de Multer para la carga de archivos en memoria
+const storage = multer.memoryStorage(); // Almacenamos los archivos en memoria
 const upload = multer({ storage: storage });
 
 // Función para validar los campos obligatorios
@@ -49,10 +42,22 @@ router.post('/', upload.fields([
       return res.status(404).json({ message: 'Usuario no encontrado.' });
     }
 
-    const existingVehicle = await Vehiculo.findOne({ where: { numero_placa: licensePlate } });
-    if (existingVehicle) {
-      return res.status(400).json({ message: 'El vehículo con esta placa ya está registrado.' });
+    // Verificar si el usuario ya tiene una solicitud de empleo pendiente o rechazada
+    const existingRequest = await SolicitudEmpleo.findOne({
+      where: {
+        id_conductor: userfind.id,
+        estado: ['pendiente', 'rechazado']
+      }
+    });
+
+    if (existingRequest && existingRequest.estado === 'pendiente') {
+      return res.status(400).json({ message: 'Ya tienes una solicitud pendiente. Por favor espera a que sea revisada.' });
     }
+
+    // Subir los archivos a S3
+    const cvUrl = req.files['cv'] ? await uploadFile(req.files['cv'][0].buffer, 'cv', 'pdf') : null;
+    const photoUrl = req.files['photo'] ? await uploadFile(req.files['photo'][0].buffer, 'photo', 'jpg') : null;
+    const vehiclePhotoUrl = req.files['vehiclePhoto'] ? await uploadFile(req.files['vehiclePhoto'][0].buffer, 'vehiclePhoto', 'jpg') : null;
 
     // Crear el vehículo
     let newVehicle;
@@ -61,8 +66,8 @@ router.post('/', upload.fields([
         marca: vehicleBrand,
         ano: vehicleYear,
         numero_placa: licensePlate,
-        foto_vehiculo: req.files['vehiclePhoto'] ? req.files['vehiclePhoto'][0]?.path : null,
-        id_conductor: userfind.id // Asignar el ID del conductor basado en el usuario encontrado
+        foto_vehiculo: vehiclePhotoUrl, // Guardamos la URL del archivo en S3
+        id_conductor: userfind.id
       });
     } catch (error) {
       console.error('Error al crear el vehículo:', error.message, error.stack);
@@ -73,9 +78,9 @@ router.post('/', upload.fields([
     let newRequest;
     try {
       newRequest = await SolicitudEmpleo.create({
-        cv: req.files['cv'][0]?.path,
-        foto: req.files['photo'][0]?.path,
-        vehiclePhoto: req.files['vehiclePhoto'] ? req.files['vehiclePhoto'][0]?.path : null, // Guardar este archivo solo si existe
+        cv: cvUrl, // Guardamos la URL del archivo en S3
+        foto: photoUrl, // Guardamos la URL del archivo en S3
+        vehiclePhoto: vehiclePhotoUrl, // Guardamos la URL del archivo en S3
         estado: 'pendiente',
         fecha_solicitud: new Date(),
         gender,

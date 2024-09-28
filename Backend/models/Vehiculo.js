@@ -24,7 +24,8 @@ const Vehiculo = sequelize.define('Vehiculo', {
    // unique: true
   },
   foto_vehiculo: {
-    type: DataTypes.BLOB('long')
+    type: DataTypes.STRING, // Guardar la URL de la foto del vehículo como texto
+    allowNull: true // Este campo es opcional
   },
   id_conductor: {
     type: DataTypes.INTEGER,

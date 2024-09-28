@@ -6,6 +6,7 @@ function SolicitudDetalles() {
   const [solicitud, setSolicitud] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalImage, setModalImage] = useState('');  // Estado para controlar la imagen en el modal
 
   const navigate = useNavigate();  // Hook para navegar entre rutas
 
@@ -51,20 +52,12 @@ function SolicitudDetalles() {
     return <div>No se encontraron detalles de la solicitud.</div>;
   }
 
-  // Función para convertir un array buffer a una cadena base64
-  const arrayBufferToBase64 = (buffer) => {
-    let binary = '';
-    const bytes = buffer;  // Es un array de números
-    bytes.forEach((b) => binary += String.fromCharCode(b));
-    return window.btoa(binary);
+  // Función para abrir el modal con la imagen seleccionada
+  const handleImageClick = (url) => {
+    setModalImage(url);  // Configura la imagen que se va a mostrar en el modal
+    const modal = new window.bootstrap.Modal(document.getElementById('imageModal'));
+    modal.show();
   };
-
-  // Obtener la imagen del solicitante
-  let fotoSolicitanteSrc = null;
-  if (solicitud.foto && solicitud.foto.data && solicitud.foto.data.length > 0) {
-    const base64String = arrayBufferToBase64(solicitud.foto.data);
-    fotoSolicitanteSrc = `data:image/jpeg;base64,${base64String}`;
-  }
 
   return (
     <div className="container my-5">
@@ -84,42 +77,61 @@ function SolicitudDetalles() {
           {solicitud.User && solicitud.User.Vehiculos && solicitud.User.Vehiculos.length > 0 && (
             <div className="mt-4">
               <h5>Detalles del Vehículo</h5>
-              {solicitud.User.Vehiculos.map((vehiculo, index) => {
-                // Obtener la imagen del vehículo
-                let fotoVehiculoSrc = null;
-                if (vehiculo.foto_vehiculo && vehiculo.foto_vehiculo.data && vehiculo.foto_vehiculo.data.length > 0) {
-                  const base64StringVehiculo = arrayBufferToBase64(vehiculo.foto_vehiculo.data);
-                  fotoVehiculoSrc = `data:image/jpeg;base64,${base64StringVehiculo}`;
-                }
-
-                return (
-                  <div key={index} className="mb-3">
-                    <p>Marca: {vehiculo.marca}</p>
-                    <p>Año: {vehiculo.ano}</p>
-                    <p>Número de Placa: {vehiculo.numero_placa}</p>
-                    {fotoVehiculoSrc && (
-                      <img
-                        src={fotoVehiculoSrc}
-                        alt="Foto del vehículo"
-                        className="img-fluid"
-                      />
-                    )}
-                  </div>
-                );
-              })}
+              {solicitud.User.Vehiculos.map((vehiculo, index) => (
+                <div key={index} className="mb-3">
+                  <p>Marca: {vehiculo.marca}</p>
+                  <p>Año: {vehiculo.ano}</p>
+                  <p>Número de Placa: {vehiculo.numero_placa}</p>
+                  {vehiculo.foto_vehiculo && (
+                    <img
+                      src={vehiculo.foto_vehiculo}  // URL de la foto del vehículo desde S3
+                      alt="Foto del vehículo"
+                      className="img-thumbnail"  // Clase de Bootstrap para estilo de imagen
+                      style={{ width: '150px', cursor: 'pointer' }}  // Tamaño controlado
+                      onClick={() => handleImageClick(vehiculo.foto_vehiculo)}  // Abre el modal al hacer clic
+                    />
+                  )}
+                </div>
+              ))}
             </div>
           )}
 
-          {fotoSolicitanteSrc && (
+          {solicitud.foto && (
             <div className="mt-4">
               <h5>Foto del solicitante</h5>
               <img
-                src={fotoSolicitanteSrc}
+                src={solicitud.foto}  // URL de la foto del solicitante desde S3
                 alt="Foto del solicitante"
-                className="img-fluid"
+                className="img-thumbnail"  // Clase de Bootstrap para estilo de imagen
+                style={{ width: '150px', cursor: 'pointer' }}  // Tamaño controlado
+                onClick={() => handleImageClick(solicitud.foto)}  // Abre el modal al hacer clic
               />
             </div>
           )}
+
+          {solicitud.cv && (
+            <div className="mt-4">
+              <h5>Currículum</h5>
+              <a href={solicitud.cv} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                Ver CV
+              </a>  {/* Enlace para descargar o visualizar el CV */}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Modal para mostrar la imagen ampliada */}
+      <div className="modal fade" id="imageModal" tabIndex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="imageModalLabel">Imagen</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body text-center">
+              <img src={modalImage} alt="Ampliada" className="img-fluid" /> 
+            </div>
+          </div>
         </div>
       </div>
     </div>
