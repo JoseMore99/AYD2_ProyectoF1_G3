@@ -2,8 +2,9 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
+const { Op } = require('sequelize'); // Importa Op desde Sequelize
 const User = require('../models/User');
-const Role = require('../models/Role'); 
+const Role = require('../models/Role');
 require('dotenv').config();
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const revokedTokens = [];
 
 // Ruta de login
 router.post('/login', [
-  check('correo', 'El correo es obligatorio').isEmail(),
+  check('login', 'El correo o nombre de usuario es obligatorio').not().isEmpty(),
   check('password', 'La contraseña es obligatoria').exists()
 ], async (req, res) => {
   const errors = validationResult(req);
@@ -21,14 +22,17 @@ router.post('/login', [
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { correo, password } = req.body;
+  const { login, password } = req.body; // Ahora 'login' puede ser correo o nombre_usuario
+
   try {
-    // Verifica si el usuario existe, incluyendo sus roles
+    // Verifica si el usuario existe, buscando por correo o nombre_usuario
     let user = await User.findOne({
-      where: { correo },
+      where: {
+        [Op.or]: [{ correo: login }, { nombre_usuario: login }] // Usa Op.or para buscar por correo o nombre_usuario
+      },
       include: [{ model: Role, attributes: ['role_name'], through: { attributes: [] } }]
     });
-    
+
     if (!user) {
       return res.status(400).json({ msg: 'Usuario incorrecto' });
     }
@@ -55,7 +59,7 @@ router.post('/login', [
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, roles: user.Roles[0].role_name, correo }); // Devuelve el token y el primer rol del usuario
+      res.json({ token, roles: user.Roles[0].role_name, correo: user.correo }); // Devuelve el token y el primer rol del usuario
     });
 
   } catch (err) {
