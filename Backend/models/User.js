@@ -28,6 +28,14 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('M', 'F', 'Otro'),
     allowNull: false
   },
+  estado: {
+    type: DataTypes.STRING,
+    defaultValue: 'activo' // Por defecto los usuarios están activos
+  },
+  motivo_baja: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   fotografia_dpi: {
     type: DataTypes.BLOB('long')
   },
@@ -63,7 +71,8 @@ User.createUser = async function(correo, nombre_completo, numero_telefono, fecha
       numero_telefono,
       fecha_nacimiento,
       genero,
-      password: hashedPassword
+      password: hashedPassword,
+      estado: 'activo' // Asignar estado por defecto
     });
 
     return user;
@@ -71,5 +80,6 @@ User.createUser = async function(correo, nombre_completo, numero_telefono, fecha
     throw new Error(error.message);
   }
 };
+
 
 module.exports = User;

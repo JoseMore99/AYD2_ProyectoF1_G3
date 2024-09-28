@@ -6,7 +6,6 @@ const User = require('../models/User');
 const Role = require('../models/Role'); // Importa el modelo de Role
 require('dotenv').config();
 
-
 const router = express.Router();
 
 // Ruta de login
@@ -31,11 +30,15 @@ router.post('/login', [
       return res.status(400).json({ msg: 'Usuario incorrecto' });
     }
 
-    // Verifica el password con bcrypt.compare
-    console.log(user.password,"recibo->"+ password);
-    const isMatch = await bcrypt.compare(password, user.password); // Asegúrate de que la columna de contraseña se llame "password"
+    // Verifica si el usuario está inactivo (dado de baja)
+    if (user.estado === 'inactivo') {
+      return res.status(403).json({ msg: 'Usuario dado de baja. No puede iniciar sesión.' });
+    }
+
+    // Verifica la contraseña con bcrypt.compare
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Contraseña incorrectos' });
+      return res.status(400).json({ msg: 'Contraseña incorrecta' });
     }
 
     // Genera el JWT
@@ -49,7 +52,7 @@ router.post('/login', [
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token , roles: user.Roles[0].role_name, correo }); // Devuelve el token y el primer rol del usuario
+      res.json({ token, roles: user.Roles[0].role_name, correo }); // Devuelve el token y el primer rol del usuario
     });
 
   } catch (err) {

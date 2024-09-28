@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
+import config from '../config'; // Importa el archivo de configuración
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar visibilidad de la contraseña
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para almacenar el mensaje de error
   const navigate = useNavigate();
 
   const handleLogin = async (email, password) => {
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
+      const res = await fetch(`${config.apiUrl}/api/auth/login`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -19,15 +21,15 @@ const LoginForm = () => {
 
       const data = await res.json();
 
-      if (data.token) {
-        console.log('Token:', data.token);
+      if (res.status === 200 && data.token) {
+        // Si hay un token, el login fue exitoso
         localStorage.setItem('token', data.token);
         localStorage.setItem('correo', data.correo);
         
         const roles = data.roles ? [data.roles] : [];
         localStorage.setItem('roles', JSON.stringify(roles));
 
-        console.log('Roles:', roles);
+        // Navegación según el rol
         if (roles.includes('Administrador')) {
           navigate('/admin');
         } else if (roles.includes('Conductor')) {
@@ -38,15 +40,17 @@ const LoginForm = () => {
           navigate('/profile');
         }
       } else {
-        console.error('Login fallido');
+        // Si no hay token, significa que hubo un error
+        setErrorMessage(data.msg || 'Error en el inicio de sesión');
       }
     } catch (err) {
-      console.error('Error durante el login', err);
+      setErrorMessage('Error de conexión con el servidor');
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrorMessage(''); // Limpia el mensaje de error al enviar el formulario
     handleLogin(email, password);
   };
 
@@ -85,6 +89,14 @@ const LoginForm = () => {
             </button>
           </div>
         </div>
+
+        {/* Mostrar el mensaje de error si existe */}
+        {errorMessage && (
+          <div className="alert alert-danger mt-3" role="alert">
+            {errorMessage}
+          </div>
+        )}
+
         <button type="submit" className="btn btn-primary w-100">Ingresar a mi cuenta</button>
       </form>
       <div className="text-center mt-3">

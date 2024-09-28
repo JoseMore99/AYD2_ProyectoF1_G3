@@ -15,6 +15,7 @@ import NuevoViaje from '../components/NuevoViaje';
 import TripList from '../components/TripList';
 import VerInfoUser from '../views/driver/VerInfoUser';
 import FinalizarViaje from '../components/FinalizarViaje';
+import BajaUsuario from '../components/BajaUsuario';
 
 export const AppRouter = () => {
   return (
@@ -93,6 +94,13 @@ export const AppRouter = () => {
             <SolicitudDetalles />
           </PrivateRoute>
         } />
+
+        {/* Ruta para bajas de usuario con rol Asistente */}
+        <Route path="/asistente/baja-usuario" element={
+          <PrivateRoute role="Asistente">
+            <BajaUsuario />
+          </PrivateRoute>
+        }/>
 
         <Route path="/admin" element={
           <PrivateRoute role="Administrador">

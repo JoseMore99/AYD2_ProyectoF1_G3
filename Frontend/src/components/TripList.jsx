@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const apiUrl = 'http://localhost:3000';
+import config from '../config'; // Importa el archivo de configuración
 
 function TripList() {
   const [activeTrip, setActiveTrip] = useState(null); // Estado para almacenar el viaje en curso
@@ -15,7 +14,7 @@ function TripList() {
   useEffect(() => {
     async function fetchActiveTrip() {
       try {
-        const response = await fetch(`${apiUrl}/api/viajes/encurso`, {
+        const response = await fetch(`${config.apiUrl}/api/viajes/encurso`, { // Usa config.apiUrl
           headers: {
             'x-auth-token': token, // Enviar el token en los headers
             'Content-Type': 'application/json',
@@ -36,7 +35,7 @@ function TripList() {
     // Función para obtener los viajes pendientes
     async function fetchAvailableTrips() {
       try {
-        const response = await fetch(`${apiUrl}/api/viajes/activos`, {
+        const response = await fetch(`${config.apiUrl}/api/viajes/activos`, { // Usa config.apiUrl
           headers: {
             'x-auth-token': token,
             'Content-Type': 'application/json',
@@ -61,7 +60,7 @@ function TripList() {
   // Función para aceptar un viaje
   const handleAccept = async (tripId) => {
     try {
-      const response = await fetch(`${apiUrl}/api/viajes/${tripId}/accept`, {
+      const response = await fetch(`${config.apiUrl}/api/viajes/${tripId}/accept`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'x-auth-token': token,
