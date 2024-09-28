@@ -25,12 +25,15 @@ function JobApplicationList() {
           },
         });
 
-        if (!response.ok) {
+        if (response.status === 404) {
+          // Si es un 404, consideramos que no hay solicitudes
+          setJobApplications([]);
+        } else if (!response.ok) {
           throw new Error('Error al obtener las solicitudes de empleo');
+        } else {
+          const data = await response.json();
+          setJobApplications(data);  // Asumimos que el backend envía un array de solicitudes
         }
-
-        const data = await response.json();
-        setJobApplications(data);  // Asumimos que el backend envía un array de solicitudes
       } catch (error) {
         setError(error.message);
       } finally {
@@ -41,9 +44,9 @@ function JobApplicationList() {
     fetchJobApplications();
   }, []);
 
-  // Función para regresar al home
-  const goBackHome = () => {
-    navigate('/profile');  // Redirigir a la página principal
+  // Función para regresar al perfil
+  const goBackToProfile = () => {
+    navigate('/profile');  // Redirigir a la página del perfil
   };
 
   if (loading) {
@@ -51,19 +54,31 @@ function JobApplicationList() {
   }
 
   if (error) {
-    return <div className="alert alert-danger text-center">{error}</div>;
+    return (
+      <div className="container my-5">
+        <div className="alert alert-danger text-center">{error}</div>
+        <div className="text-center">
+          <button className="btn btn-primary mt-3" onClick={goBackToProfile}>
+            Regresar a mi Perfil
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="container my-5">
       <div className="d-flex justify-content-start mb-4">
-        <button className="btn btn-secondary" onClick={goBackHome}>
-          <i className="bi bi-arrow-left"></i> Volver al Inicio
+        <button className="btn btn-secondary" onClick={goBackToProfile}>
+          <i className="bi bi-arrow-left"></i> Volver a mi Perfil
         </button>
       </div>
       <h2 className="text-center">Mis Solicitudes de Empleo</h2>
       {jobApplications.length === 0 ? (
-        <p className="text-center">No tienes solicitudes de empleo aún.</p>
+        <div className="text-center">
+          <p>No tienes solicitudes de empleo aún.</p>
+          
+        </div>
       ) : (
         <table className="table table-hover">
           <thead className="table-dark">

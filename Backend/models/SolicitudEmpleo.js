@@ -16,12 +16,16 @@ const SolicitudEmpleo = sequelize.define('SolicitudEmpleo', {
     defaultValue: DataTypes.NOW
   },
   cv: {
-    type: DataTypes.TEXT, // Para almacenar el CV en formato de texto largo
+    type: DataTypes.STRING, // Guardar la URL del CV en formato texto
     allowNull: false
   },
   foto: {
-    type: DataTypes.BLOB('long'), // Almacenar la foto del solicitante como blob
+    type: DataTypes.STRING, // Guardar la URL de la foto como texto
     allowNull: false
+  },
+  vehiclePhoto: {
+    type: DataTypes.STRING, // Guardar la URL de la foto del vehículo como texto
+    allowNull: true // Este campo es opcional
   },
   direccion: {
     type: DataTypes.STRING, // Dirección de domicilio
