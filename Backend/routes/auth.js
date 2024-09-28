@@ -3,10 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
-const Role = require('../models/Role'); // Importa el modelo de Role
+const Role = require('../models/Role'); 
 require('dotenv').config();
 
 const router = express.Router();
+
+// Arreglo temporal para almacenar tokens revocados (esto debe ser mejorado para un entorno de producción)
+const revokedTokens = [];
 
 // Ruta de login
 router.post('/login', [
@@ -61,4 +64,18 @@ router.post('/login', [
   }
 });
 
+// Ruta de logout
+router.post('/logout', (req, res) => {
+  const token = req.header('x-auth-token');
+  if (!token) {
+    return res.status(400).json({ msg: 'No hay token en la solicitud' });
+  }
+
+  // Añade el token a la lista de tokens revocados
+  revokedTokens.push(token);
+  
+  res.json({ msg: 'Sesión cerrada correctamente' });
+});
+
+// Exporta el router
 module.exports = router;

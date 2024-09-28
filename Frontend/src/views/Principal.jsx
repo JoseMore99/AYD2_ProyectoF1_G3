@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 function Principal() {
   // Para esta pantalla, asumimos que el usuario no está logueado
   const isLoggedIn = false;
-  const userName = ''; // No hay nombre de usuario si no está logueado
+  const userName = ''; 
 
   return (
     <div>

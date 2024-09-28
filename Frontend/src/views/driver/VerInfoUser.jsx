@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useState, useEffect } from "react";
 import UserInfo from '../../components/UserInfo';
+import config from '../../config';
 
 const VerInfoUser = () => {
 
@@ -25,8 +26,8 @@ const VerInfoUser = () => {
             emailUser: correoUsuario
         });
 
-
-        fetch(`http://localhost:3000/userRoute/user-info?${params.toString()}`, { method: 'GET' })
+            
+        fetch(`${config.apiUrl}/userRoute/user-info?${params.toString()}`, { method: 'GET' })
             .then(response => response.json())
             .then(data => {
                 console.log(data)
