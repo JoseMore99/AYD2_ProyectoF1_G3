@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
+import config from '../../config';
+
 function ReportarProblema() {
 
     const [idReportado, setidReportado] = useState(null);
@@ -22,7 +24,7 @@ function ReportarProblema() {
             tipo: tipo
 
         };
-        const endpoint = 'http://localhost:3000/userRoute/reportar-problema';
+        const endpoint = `${config.apiUrl}/userRoute/reportar-problema`;
         fetch(endpoint, {
             method: 'POST',
             headers: {
