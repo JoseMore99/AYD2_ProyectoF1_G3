@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import config from '../config'; // Importa el archivo de configuración
 
 function SolicitudDetalles() {
   const { id } = useParams();  // Obtener el ID de la solicitud desde la URL
@@ -16,7 +17,7 @@ function SolicitudDetalles() {
       try {
         const token = localStorage.getItem('token');
 
-        const response = await fetch(`http://localhost:3000/api/solicitudes/${id}`, {
+        const response = await fetch(`${config.apiUrl}/api/solicitudes/${id}`, { // Usa config.apiUrl
           method: 'GET',
           headers: {
             'x-auth-token': token,

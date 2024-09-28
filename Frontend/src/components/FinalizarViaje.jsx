@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const apiUrl = 'http://localhost:3000';
+import config from '../config'; // Importa el archivo de configuración
 
 function FinalizarViaje() {
   const [trips, setTrips] = useState([]);
@@ -12,7 +11,7 @@ function FinalizarViaje() {
   useEffect(() => {
     async function fetchTrips() {
       try {
-        const response = await fetch(`${apiUrl}/api/viajes/enCurso`, {
+        const response = await fetch(`${config.apiUrl}/api/viajes/enCurso`, { // Usa config.apiUrl
           headers: {
             'x-auth-token': token, 
             'Content-Type': 'application/json',
@@ -23,7 +22,7 @@ function FinalizarViaje() {
         if (data.trips) {
           setTrips(data.trips);
         } else {
-          console.error('No se encontraron viajes en Curso');
+          console.error('No se encontraron viajes en curso');
         }
       } catch (error) {
         console.error('Error al obtener los viajes:', error);
@@ -33,29 +32,29 @@ function FinalizarViaje() {
     fetchTrips();
   }, [token]);
 
-  // Función para aceptar un viaje
+  // Función para finalizar un viaje
   const handleFinish = async (tripId) => {
     try {
-      const response = await fetch(`${apiUrl}/api/viajes/${tripId}/finish`, {
+      const response = await fetch(`${config.apiUrl}/api/viajes/${tripId}/finish`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'x-auth-token': token, // Enviar el token en los headers
           'Content-Type': 'application/json',
         },
       });
+
       const data = await response.json();
 
       if (data.success) {
         alert('Viaje finalizado con éxito');
-        setTrips((prevTrips) => prevTrips.filter((trip) => trip.id_viaje !== tripId)); // Remover el viaje aceptado
+        setTrips((prevTrips) => prevTrips.filter((trip) => trip.id_viaje !== tripId)); // Remover el viaje finalizado
       } else {
-        alert('El viaje ya fue finalizado o cancelado por el usuarior');
+        alert('El viaje ya fue finalizado o cancelado por el usuario');
       }
     } catch (error) {
-      console.error('Error al aceptar el viaje:', error);
+      console.error('Error al finalizar el viaje:', error);
     }
   };
-
 
   // Navegar a la ruta anterior (/driver)
   const handleBack = () => {

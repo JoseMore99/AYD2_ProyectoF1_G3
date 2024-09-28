@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const apiUrl = 'http://localhost:3000';
+import config from '../config'; // Importa el archivo de configuración
 
 function NuevoViaje() {
   const [puntosPartida, setPuntosPartida] = useState([]);
@@ -22,7 +21,7 @@ function NuevoViaje() {
 
   // Obtener puntos de partida al cargar el componente
   useEffect(() => {
-    fetch(`${apiUrl}/api/direcciones/partida`)
+    fetch(`${config.apiUrl}/api/direcciones/partida`) // Usa config.apiUrl
       .then(response => response.json())
       .then(data => setPuntosPartida(data))
       .catch(error => console.error('Error obteniendo puntos de partida:', error));
@@ -35,7 +34,7 @@ function NuevoViaje() {
     setLlegadaSeleccionada('');  // Resetear la selección de llegada
     setTarifa(null);  // Resetear la tarifa
 
-    fetch(`${apiUrl}/api/direcciones/llegada/${idPartida}`)
+    fetch(`${config.apiUrl}/api/direcciones/llegada/${idPartida}`) // Usa config.apiUrl
       .then(response => response.json())
       .then(data => setPuntosLlegada(data))
       .catch(error => console.error('Error obteniendo puntos de llegada:', error));
@@ -46,7 +45,7 @@ function NuevoViaje() {
     const idLlegada = e.target.value;
     setLlegadaSeleccionada(idLlegada);
 
-    fetch(`${apiUrl}/api/tarifas/${partidaSeleccionada}/${idLlegada}`)
+    fetch(`${config.apiUrl}/api/tarifas/${partidaSeleccionada}/${idLlegada}`) // Usa config.apiUrl
       .then(response => response.json())
       .then(data => setTarifa(data.monto))
       .catch(error => console.error('Error obteniendo la tarifa:', error));
@@ -58,7 +57,7 @@ function NuevoViaje() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${apiUrl}/api/viajes`, {
+      const response = await fetch(`${config.apiUrl}/api/viajes`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

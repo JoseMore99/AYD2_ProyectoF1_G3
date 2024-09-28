@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../config'; // Importa el archivo de configuración
 
 function SolicitudesConductor() {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -14,7 +15,7 @@ function SolicitudesConductor() {
       try {
         const token = localStorage.getItem('token');  // Obtener el token del localStorage
 
-        const response = await fetch('http://localhost:3000/api/solicitudes', {
+        const response = await fetch(`${config.apiUrl}/api/solicitudes`, { // Usa config.apiUrl
           method: 'GET',
           headers: {
             'x-auth-token': token,  // Enviar el token en el header
@@ -43,7 +44,7 @@ function SolicitudesConductor() {
       setProcessing(true);  // Mostrar indicador de procesamiento
       const token = localStorage.getItem('token');
 
-      const response = await fetch(`http://localhost:3000/api/solicitudes/${id}/aprobar`, {
+      const response = await fetch(`${config.apiUrl}/api/solicitudes/${id}/aprobar`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'x-auth-token': token,
@@ -69,7 +70,7 @@ function SolicitudesConductor() {
       setProcessing(true);  // Mostrar indicador de procesamiento
       const token = localStorage.getItem('token');
 
-      const response = await fetch(`http://localhost:3000/api/solicitudes/${id}/rechazar`, {
+      const response = await fetch(`${config.apiUrl}/api/solicitudes/${id}/rechazar`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'x-auth-token': token,

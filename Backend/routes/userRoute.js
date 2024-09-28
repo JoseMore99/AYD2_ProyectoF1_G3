@@ -76,4 +76,43 @@ router.put('/cancelar-viaje', verificarToken,CancelarViaje);
 
 router.get('/user-info', ObtenerInfoUser);
 
+// Dar de baja a un usuario
+router.post('/usuarios/:id/baja', async (req, res) => {
+  const userId = req.params.id;
+  const { reason } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Actualiza el estado del usuario y guarda el motivo de la baja
+    user.estado = 'inactivo'; 
+    user.motivo_baja = reason; 
+    await user.save();
+
+    res.json({ message: 'Usuario dado de baja exitosamente' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al dar de baja al usuario' });
+  }
+});
+
+// Ruta para obtener la lista de usuarios
+router.get('/usuarios', async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'nombre_completo', 'correo', 'estado', 'numero_telefono', 'fecha_nacimiento'], // Ajusta los atributos según lo que quieras devolver
+      include: [{ model: Role, attributes: ['role_name'], through: { attributes: [] } }] // Incluye los roles si es necesario
+    });
+
+    res.json(users);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Error al obtener la lista de usuarios' });
+  }
+});
+
+
+
 module.exports = router;

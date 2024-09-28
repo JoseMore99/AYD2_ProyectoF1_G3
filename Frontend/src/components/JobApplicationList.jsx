@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // Importar hook para redirección
+import config from '../config'; // Importa el archivo de configuración
 
 function JobApplicationList() {
   const [jobApplications, setJobApplications] = useState([]);
@@ -17,7 +18,7 @@ function JobApplicationList() {
           throw new Error('Token no encontrado. Por favor, inicia sesión.');
         }
 
-        const response = await fetch('http://localhost:3000/user/solicitudes', {
+        const response = await fetch(`${config.apiUrl}/user/solicitudes`, { // Usa config.apiUrl
           method: 'GET',
           headers: {
             'x-auth-token': token,  // Incluir el token en el header
@@ -77,7 +78,6 @@ function JobApplicationList() {
       {jobApplications.length === 0 ? (
         <div className="text-center">
           <p>No tienes solicitudes de empleo aún.</p>
-          
         </div>
       ) : (
         <table className="table table-hover">
