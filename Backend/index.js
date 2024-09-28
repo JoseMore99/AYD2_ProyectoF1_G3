@@ -9,6 +9,7 @@ const driverRequests = require('./routes/driverRequests');
 const userRequests = require('./routes/userRequests'); 
 const jobApplications = require('./routes/jobApplications');
 const viajeRoutes = require('./routes/viajeRoutes');
+const { uploadFile } = require('./config/s3');
 
 const app = express();
 
@@ -18,6 +19,13 @@ app.use(express.json());
 // Ruta de saludo
 app.get('/', (req, res) => {
   res.json({ status: "OK" });
+});
+
+app.post('/prueba', async (req, res) => {
+  const i= req.body.imagen
+  const bodyImage = Buffer.from(i, 'base64');
+  const s3 =await uploadFile(bodyImage,"imagen","jpg") 
+  res.json({ status: "OK" ,imagen:s3});
 });
 
 // Rutas de autenticación (login, registro, etc.)
