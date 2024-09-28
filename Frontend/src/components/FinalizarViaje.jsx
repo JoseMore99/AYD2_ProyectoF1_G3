@@ -83,8 +83,8 @@ function FinalizarViaje() {
                     <p className="card-text">
                       <strong>Usuario:</strong> {trip.usuario?.nombre_completo || 'No disponible'}<br />
                       <strong>Tarifa:</strong> Q{trip.tarifa?.monto || 'No disponible'}<br />
-                      <strong>Punto de partida:</strong> {trip.direccionPartida?.direccion || 'No disponible'}<br />
-                      <strong>Punto de llegada:</strong> {trip.direccionLlegada?.direccion || 'No disponible'}<br />
+                      <strong>Punto de partida:</strong> {trip.direccionPartida?.descripcion || 'No disponible'}<br />
+                      <strong>Punto de llegada:</strong> {trip.direccionLlegada?.descripcion || 'No disponible'}<br />
                       <strong>Estado:</strong> {trip.estado}<br />
                       <strong>Fecha de inicio:</strong> {new Date(trip.fecha_hora_inicio).toLocaleString()}
                     </p>

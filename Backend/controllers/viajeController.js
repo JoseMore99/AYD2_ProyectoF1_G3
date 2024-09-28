@@ -68,13 +68,23 @@ const updateEstadoViaje = async (req, res) => {
 
 // Obtener viajes activos (pendientes)
 const getViajesActivos = async (req, res) => {
+  const conductorId = req.user.id;
+
   try {
+    // Verificar si el conductor tiene un viaje en curso
+    const viajeEnCurso = await Viaje.findOne({
+      where: {
+        id_conductor: conductorId,
+        estado: 'en curso'
+      }
+    });
+
     const viajesPendientes = await Viaje.findAll({
       where: { estado: 'pendiente' },
       include: [
         { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
         { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
-        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, // Asegúrate de que 'descripcion' sea el campo correcto en 'Direcciones'
+        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
         { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] }
       ]
     });
@@ -83,12 +93,13 @@ const getViajesActivos = async (req, res) => {
       return res.status(404).json({ message: 'No se encontraron viajes activos' });
     }
 
-    res.json({ trips: viajesPendientes });
+    res.json({ trips: viajesPendientes, viajeEnCurso });
   } catch (error) {
     console.error('Error al obtener los viajes activos:', error);
     res.status(500).json({ message: 'Error al obtener los viajes activos' });
   }
 };
+
 
 // Obtener viajes activos (pendientes)
 const getViajesEnCurso = async (req, res) => {
@@ -124,6 +135,19 @@ const aceptarViaje = async (req, res) => {
   const conductorId = req.user.id; 
 
   try {
+    // Verificar si el conductor ya tiene un viaje en curso
+    const viajeEnCurso = await Viaje.findOne({
+      where: {
+        id_conductor: conductorId,
+        estado: 'en curso'
+      }
+    });
+
+    if (viajeEnCurso) {
+      return res.status(400).json({ success: false, message: 'Ya tienes un viaje en curso. No puedes aceptar otro.' });
+    }
+
+    // Buscar el viaje que se desea aceptar
     const viaje = await Viaje.findOne({ where: { id_viaje } });
 
     if (!viaje) {
@@ -134,6 +158,7 @@ const aceptarViaje = async (req, res) => {
       return res.status(400).json({ success: false, message: 'El viaje ya ha sido aceptado o está en curso' });
     }
 
+    // Asignar el viaje al conductor
     viaje.id_conductor = conductorId;
     viaje.estado = 'en curso';
     await viaje.save();
@@ -144,6 +169,7 @@ const aceptarViaje = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error al aceptar el viaje' });
   }
 };
+
 
 // Obtener puntos de partida
 const getPuntosPartida = async (req, res) => {

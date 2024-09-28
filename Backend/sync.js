@@ -72,7 +72,6 @@ Viaje.belongsTo(Tarifa, { as: 'tarifa', foreignKey: 'id_tarifa' });
 Viaje.belongsTo(Direccion, { as: 'direccionPartida', foreignKey: 'punto_partida' });
 Viaje.belongsTo(Direccion, { as: 'direccionLlegada', foreignKey: 'punto_llegada' });
 
-
 // Sincronizar base de datos
 const syncDB = async () => {
   try {
