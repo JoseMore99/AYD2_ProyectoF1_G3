@@ -1,0 +1,16 @@
+services:
+  backend:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./Backend:/app  # Sincroniza el código fuente del host con el contenedor
+    command: npm run dev  # Utiliza nodemon o el comando de desarrollo
+
+  frontend:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./Frontend:/app  
+    ports:
+      - "5173:5173"  # Asegura que el puerto 5173 esté expuesto
+    command: npm run dev -- --host 0.0.0.0  # Exponer Vite en todas las interfaces

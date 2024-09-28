@@ -26,9 +26,6 @@ router.post('/', upload.fields([
 ]), async (req, res) => {
   const { fullName, phoneNumber, age, dpi, email, gender, maritalStatus, address, vehicleBrand, vehicleYear, licensePlate } = req.body;
 
-  console.log(req.body);
-  console.log(req.files);
-
   // Validar campos obligatorios
   const missingFields = validateFields(req.body, req.files);
   if (missingFields.length) {

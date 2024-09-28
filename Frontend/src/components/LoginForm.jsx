@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import config from '../config'; // Importa el archivo de configuración
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState(''); // Ahora es 'login' en lugar de 'email'
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Estado para controlar visibilidad de la contraseña
   const [errorMessage, setErrorMessage] = useState(''); // Estado para almacenar el mensaje de error
   const navigate = useNavigate();
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async (login, password) => {
     try {
       const res = await fetch(`${config.apiUrl}/api/auth/login`, { // Usa config.apiUrl
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ correo: email, password })
+        body: JSON.stringify({ login, password }) // Cambié 'correo' a 'login'
       });
 
       const data = await res.json();
@@ -51,7 +51,7 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMessage(''); // Limpia el mensaje de error al enviar el formulario
-    handleLogin(email, password);
+    handleLogin(login, password); // Pasa 'login' y 'password'
   };
 
   return (
@@ -59,14 +59,14 @@ const LoginForm = () => {
       <h2 className="text-center">Ingresa a tu cuenta Q-NAVI</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">Correo electrónico</label>
+          <label htmlFor="login" className="form-label">Correo electrónico o Nombre de Usuario</label> {/* Cambié la etiqueta */}
           <input 
-            type="email" 
+            type="text" 
             className="form-control" 
-            id="email" 
-            placeholder="Ingresa tu correo"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)} 
+            id="login" 
+            placeholder="Ingresa tu correo o nombre de usuario" // Cambié el placeholder
+            value={login}
+            onChange={(e) => setLogin(e.target.value)} 
           />
         </div>
         <div className="mb-3">
