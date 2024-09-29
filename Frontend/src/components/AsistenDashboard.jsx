@@ -13,8 +13,9 @@ function AsistenDashboard() {
           <ProfileActionCard iconClass="bi-file-earmark" title="Generar ofertas" description="Crea y administra ofertas" route="/generar-ofertas" />
           <ProfileActionCard iconClass="bi-eye" title="Ver solicitudes" description="Revisa y maneja solicitudes" route="/ver-solicitudes" />
           <ProfileActionCard iconClass="bi-person-x" title="Baja de usuario" description="Gestiona la baja de usuarios" route="/asistente/baja-usuario" />
-          <ProfileActionCard iconClass="bi-graph-up" title="Reportes" description="Genera y visualiza reportes" route="/reportes" />
+          <ProfileActionCard iconClass="bi-person" title="Usuarios" description="Visualiza los Usuarios" route="/asistente/VerUsuarios" />
           <ProfileActionCard iconClass="bi-person" title="Conductores" description="Visualiza los Conductores" route="/asistente/VerConductores" />
+          <ProfileActionCard iconClass="bi-graph-up" title="Reportes" description="Genera y visualiza reportes" route="/reportes" />
         </div>
       </div>
       {
