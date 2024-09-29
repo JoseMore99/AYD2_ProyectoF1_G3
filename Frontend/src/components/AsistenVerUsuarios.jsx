@@ -8,7 +8,6 @@ function AsistenVerUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [filteredUsuarios, setFilteredUsuarios] = useState([]); // Para almacenar los usuarios filtrados
     const [selectedUser, setSelectedUser] = useState(null);
-    const [reason, setReason] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [showConfirm, setShowConfirm] = useState(false); // Control del modal
