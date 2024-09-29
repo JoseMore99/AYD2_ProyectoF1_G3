@@ -113,6 +113,20 @@ router.get('/usuarios', async (req, res) => {
   }
 });
 
+// Ruta para obtener la lista de conductores
+router.get('/conductores', async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'nombre_completo', 'correo', 'estado', 'numero_telefono', 'fecha_nacimiento'], // Ajusta los atributos según lo que quieras devolver
+      include: [{ model: Role, attributes: ['role_name'], through: { attributes: [] }, where: { role_name: 'Conductor' } }] // Incluye los roles si es necesario
+    });
+
+    res.json(users);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Error al obtener la lista de usuarios' });
+  }
+});
 
 
 module.exports = router;

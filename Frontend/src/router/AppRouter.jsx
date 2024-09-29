@@ -18,6 +18,7 @@ import VerInfoUser from '../views/driver/VerInfoUser';
 import FinalizarViaje from '../components/FinalizarViaje';
 import BajaUsuario from '../components/BajaUsuario';
 import ReportarProblemaDriver from '../views/driver/ReportaProblema';
+import AsistenVerConductores from '../components/AsistenVerConductores'
 
 export const AppRouter = () => {
   return (
@@ -113,6 +114,12 @@ export const AppRouter = () => {
         <Route path="/asistente/baja-usuario" element={
           <PrivateRoute role="Asistente">
             <BajaUsuario />
+          </PrivateRoute>
+        }/>
+
+        <Route path="/asistente/VerConductores" element={
+          <PrivateRoute role="Asistente">
+            <AsistenVerConductores />
           </PrivateRoute>
         }/>
 
