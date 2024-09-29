@@ -17,6 +17,7 @@ import UserTripList from '../components/UserTripList';
 import VerInfoUser from '../views/driver/VerInfoUser';
 import FinalizarViaje from '../components/FinalizarViaje';
 import BajaUsuario from '../components/BajaUsuario';
+import ReportarProblemaDriver from '../views/driver/ReportaProblema';
 
 export const AppRouter = () => {
   return (
@@ -82,6 +83,12 @@ export const AppRouter = () => {
             <FinalizarViaje />
           </PrivateRoute>
         } />
+        <Route path="/driver/reportar" element={
+          <PrivateRoute role="Conductor">
+            <ReportarProblemaDriver />
+          </PrivateRoute>
+        } />
+
 
         <Route path="/asistente" element={
           <PrivateRoute role="Asistente">

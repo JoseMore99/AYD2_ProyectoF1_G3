@@ -11,7 +11,7 @@ function DriverDashboard() {
           <ProfileActionCard iconClass="bi-pencil-square" title="Modifica tu perfil" description="Actualiza tu información personal" route="/modifica-perfil" />
           <ProfileActionCard iconClass="bi-star" title="Califica tu viaje" description="Evalúa tu experiencia" route="/califica-viaje" />
           <ProfileActionCard iconClass="bi-wallet2" title="Método de pago" description="Agrega o edita métodos de pago" route="/metodo-pago" />
-          <ProfileActionCard iconClass="bi-exclamation-circle" title="Reporta inconveniente" description="Informa sobre un problema" route="/reporta-inconveniente" />
+          <ProfileActionCard iconClass="bi-exclamation-circle" title="Reporta inconveniente" description="Informa sobre un problema" route="/driver/reportar" />
           <ProfileActionCard iconClass="bi-x-circle" title="Cancela viaje" description="Cancela un viaje próximo" route="/cancelar-viaje" />
           <ProfileActionCard iconClass="bi-cash" title="Ganancias" description="Consulta tus ganancias" route="/ganancias" />
         </div>

@@ -168,40 +168,6 @@ const getViajesUsuario = async (req, res) => {
   }
 };
 
-// Obtener viajes activos (pendientes) usuario
-const getViajesActivosUsuario = async (req, res) => {
-  const usuarioId = req.user.id;
-
-  try {
-    // Verificar si el conductor tiene un viaje en curso
-    const viajeEnCurso = await Viaje.findOne({
-      where: {
-        id_usuario: usuarioId,
-        estado: 'finalizado'
-      }
-    });
-
-    const viajesPendientes = await Viaje.findAll({
-      where: { estado: 'pendiente' },
-      include: [
-        { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
-        { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
-        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
-        { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] }
-      ]
-    });
-
-    if (viajesPendientes.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron viajes activos' });
-    }
-
-    res.json({ trips: viajesPendientes, viajeEnCurso });
-  } catch (error) {
-    console.error('Error al obtener los viajes activos:', error);
-    res.status(500).json({ message: 'Error al obtener los viajes activos' });
-  }
-};
-
 // Aceptar un viaje
 const aceptarViaje = async (req, res) => {
   const { id_viaje } = req.params;
@@ -346,6 +312,5 @@ module.exports = {
   getTarifa,
   finalizarViaje,
   getViajesEnCurso,
-  getViajesUsuario,
-  getViajesActivosUsuario
+  getViajesUsuario
 };

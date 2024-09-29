@@ -4,6 +4,11 @@ const SolicitudEmpleo = require('../models/SolicitudEmpleo');
 const User = require('../models/User');
 const Vehiculo = require('../models/Vehiculo');
 const { uploadFile } = require('../config/s3'); // Importamos la función de subir archivos a S3
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
+const { 
+  ReportarProblema
+} = require('../controllers/driver.controller');
 
 const router = express.Router();
 
@@ -100,5 +105,25 @@ router.post('/', upload.fields([
     res.status(500).json({ message: 'Error general al procesar la solicitud.', error: error.message });
   }
 });
+
+function verificarToken(req, res, next) {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return res.status(403).send('Token no proporcionado');
+  }
+  const secretKey = process.env.JWT_SECRET;
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).send('Token no válido o expirado');
+    }
+    req.user = decoded;
+    next();
+  });
+}
+
+router.post('/reportar-problema', verificarToken, [
+  check('descripcion', 'La descripcion es obligatoria').not().isEmpty(),
+  check('fecha', 'La fecha es obligatoria').isDate()
+], ReportarProblema);
 
 module.exports = router;
