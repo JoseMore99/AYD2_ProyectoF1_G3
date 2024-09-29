@@ -13,6 +13,7 @@ import SolicitudesConductor from '../components/SolicitudesConductor';
 import SolicitudDetalles from '../components/SolicitudDetalles'
 import NuevoViaje from '../components/NuevoViaje';
 import TripList from '../components/TripList';
+import UserTripList from '../components/UserTripList';
 import VerInfoUser from '../views/driver/VerInfoUser';
 import FinalizarViaje from '../components/FinalizarViaje';
 import BajaUsuario from '../components/BajaUsuario';
@@ -49,6 +50,12 @@ export const AppRouter = () => {
         <Route path="/user/ver-solicitudes" element={
           <PrivateRoute role="Usuario">
             <JobApplicationList />
+          </PrivateRoute>
+        } />
+
+        <Route path="/user/ver-viajes" element={
+          <PrivateRoute role="Usuario">
+            <UserTripList />
           </PrivateRoute>
         } />
 

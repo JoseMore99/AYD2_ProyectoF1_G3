@@ -9,7 +9,9 @@ const {
   getPuntosLlegada, 
   getTarifa, 
   finalizarViaje,
-  getViajesEnCurso
+  getViajesEnCurso,
+  getViajesUsuario,
+  getViajesActivosUsuario
 } = require('../controllers/viajeController');
 const auth = require('../middleware/auth');
 
@@ -39,5 +41,11 @@ router.get('/direcciones/llegada/:id_partida', getPuntosLlegada);
 
 // Obtener la tarifa
 router.get('/tarifas/:id_partida/:id_llegada', getTarifa);
+
+// Obtener viajes usuario
+router.get('/viajes/enCursoUsuario', auth, getViajesUsuario);
+
+// Obtener viajes usuario
+router.get('/viajes/activosUsuario', auth, getViajesUsuario);
 
 module.exports = router;

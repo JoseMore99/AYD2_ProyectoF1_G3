@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Viaje = require('../models/Viaje');
 const Tarifa = require('../models/Tarifa');
 const Direccion = require('../models/Direccion');
+const Vehiculo = require('../models/Vehiculo');
 
 // Crear un nuevo viaje
 const createViaje = async (req, res) => {
@@ -128,6 +129,78 @@ const getViajesEnCurso = async (req, res) => {
   }
 };
 
+// Obtener viajes activos (pendientes)
+const getViajesUsuario = async (req, res) => {
+ // console.log("usuarioid:",req.user.id)
+  try {
+    const viajeEnCurso = await Viaje.findAll({
+      where: {
+        //estado: 'en curso',
+        id_usuario: req.user.id,
+      },
+      include: [
+        { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
+        { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
+        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
+        { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] },
+        {
+          model: User,
+          as: 'conductor',
+          attributes: ['nombre_completo', 'numero_telefono'],
+          include: [
+            {
+              model: Vehiculo,
+              as: 'Vehiculos',
+              attributes: ['marca', 'ano', 'numero_placa', 'foto_vehiculo']
+            }
+          ]
+        }
+      ]
+    });
+
+    if (viajeEnCurso.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron viajes en curso' });
+    }
+    res.json({ trips: viajeEnCurso });
+  } catch (error) {
+    console.error('Error al obtener los viajes en curso:', error);
+    res.status(500).json({ message: 'Error al obtener los viajes en curso' });
+  }
+};
+
+// Obtener viajes activos (pendientes) usuario
+const getViajesActivosUsuario = async (req, res) => {
+  const usuarioId = req.user.id;
+
+  try {
+    // Verificar si el conductor tiene un viaje en curso
+    const viajeEnCurso = await Viaje.findOne({
+      where: {
+        id_usuario: usuarioId,
+        estado: 'finalizado'
+      }
+    });
+
+    const viajesPendientes = await Viaje.findAll({
+      where: { estado: 'pendiente' },
+      include: [
+        { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
+        { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
+        { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
+        { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] }
+      ]
+    });
+
+    if (viajesPendientes.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron viajes activos' });
+    }
+
+    res.json({ trips: viajesPendientes, viajeEnCurso });
+  } catch (error) {
+    console.error('Error al obtener los viajes activos:', error);
+    res.status(500).json({ message: 'Error al obtener los viajes activos' });
+  }
+};
 
 // Aceptar un viaje
 const aceptarViaje = async (req, res) => {
@@ -272,5 +345,7 @@ module.exports = {
   getPuntosLlegada,
   getTarifa,
   finalizarViaje,
-  getViajesEnCurso
+  getViajesEnCurso,
+  getViajesUsuario,
+  getViajesActivosUsuario
 };
