@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import config from '../config'; // Importa el archivo de configuración
+import { Modal, Button } from 'react-bootstrap'; //importar para utilizar Modal
+import VerInfoUser from '../views/driver/VerInfoUser';
 
 function TripList() {
   const [activeTrip, setActiveTrip] = useState(null); // Estado para almacenar el viaje en curso
@@ -80,9 +82,43 @@ function TripList() {
     }
   };
 
+  const cancelarViaje = async () => {
+    const idViaje = null;
+    try {
+      const response = await fetch(`${config.apiUrl}/userRoute/cancelar-viaje`, { // Usa config.apiUrl
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': token,
+        },
+        body: JSON.stringify({ idViaje }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.msg);
+      } else {
+        alert(data.msg);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al conectar con el servidor');
+    }
+  };
+
   // Navegar a la ruta anterior (/driver)
   const handleBack = () => {
     navigate('/driver');
+  };
+
+  const [show, setShow] = useState(false);
+  const [selectedTrip, setSelectedTrip] = useState(null);
+
+  const handleClose = () => setShow(false);
+  const handleShow = (trip) => {
+      setSelectedTrip(trip);
+      setShow(true);
   };
 
   return (
@@ -112,6 +148,9 @@ function TripList() {
                     <strong>Estado:</strong> {activeTrip.estado}<br />
                     <strong>Fecha de inicio:</strong> {new Date(activeTrip.fecha_hora_inicio).toLocaleString()}
                   </p>
+                  <button className="btn btn-outline-danger" onClick={cancelarViaje}>
+                        Cancelar Viaje
+                      </button>
                 </div>
               </div>
             </div>
@@ -150,6 +189,12 @@ function TripList() {
                       >
                         Aceptar
                       </button>
+                      <button
+                          className="btn btn-success"
+                          onClick={() => handleShow(trip)}
+                      >
+                          Ver Usuario
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -163,6 +208,24 @@ function TripList() {
           Regresar
         </button>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+            <Modal.Title>Detalles del Usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            {selectedTrip ? (
+                <VerInfoUser userId={selectedTrip.id_usuario}/>
+            ) : (
+                <p>Loading...</p>
+            )}
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Cerrar
+            </Button>
+        </Modal.Footer>
+    </Modal>
     </div>
   );
 }

@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import UserInfo from '../../components/UserInfo';
 import config from '../../config';
 
-const VerInfoUser = () => {
+const VerInfoUser = ({ userId }) => {
 
-    const [idUser, setid] = useState(1)
     const [correoUsuario, setcorreoUsuario] = useState("")
     const [actual, setactual] = useState({
         id: 0,
@@ -22,7 +21,7 @@ const VerInfoUser = () => {
 
     function buscarUsuario() {
         const params = new URLSearchParams({
-            idUser: idUser,
+            idUser: userId,
             emailUser: correoUsuario
         });
 
@@ -41,7 +40,6 @@ const VerInfoUser = () => {
 
     useEffect(() => {
         setcorreoUsuario("")
-        setid(3)//Añadir aqui el ID del usuario que selecciono el Conductor
         buscarUsuario();
     }, []);
 

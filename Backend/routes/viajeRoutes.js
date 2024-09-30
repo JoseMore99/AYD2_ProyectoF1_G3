@@ -10,7 +10,8 @@ const {
   getTarifa, 
   finalizarViaje,
   getViajesEnCurso,
-  getViajesUsuario
+  getViajesUsuario,
+  getViajesEnCursoUser
 } = require('../controllers/viajeController');
 const auth = require('../middleware/auth');
 
@@ -25,6 +26,9 @@ router.get('/viajes/activos', auth, getViajesActivos);
 
 // Obtener viajes en curso
 router.get('/viajes/enCurso', auth, getViajesEnCurso);
+
+// Obtener viajes en curso
+router.get('/viajes/enCursoUser', auth, getViajesEnCursoUser);
 
 // Aceptar un viaje
 router.post('/viajes/:id_viaje/accept', auth, aceptarViaje);
