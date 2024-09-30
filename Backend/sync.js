@@ -13,6 +13,7 @@ const Pago = require('./models/Pago');
 const Reporte = require('./models/Reporte');
 const SolicitudEmpleo = require('./models/SolicitudEmpleo');
 const Viaje = require('./models/Viaje'); 
+const Log = require('./models/Log');
 
 // Definir asociaciones entre modelos
 User.belongsToMany(Role, { through: UserRole, foreignKey: 'user_id' });
@@ -72,10 +73,14 @@ Viaje.belongsTo(Tarifa, { as: 'tarifa', foreignKey: 'id_tarifa' });
 Viaje.belongsTo(Direccion, { as: 'direccionPartida', foreignKey: 'punto_partida' });
 Viaje.belongsTo(Direccion, { as: 'direccionLlegada', foreignKey: 'punto_llegada' });
 
+// Relación con User (opcional, si se requiere asociar el log a un usuario)
+User.hasMany(Log, { foreignKey: 'user_id' });
+Log.belongsTo(User, { foreignKey: 'user_id' });
+
 // Sincronizar base de datos
 const syncDB = async () => {
   try {
-    await sequelize.sync({ alter: true }); // Otras opciones: { force: true } si necesitas recrear la base de datos
+    await sequelize.sync({ alter: false }); // Otras opciones: { force: true } si necesitas recrear la base de datos
     console.log('Base de datos sincronizada.');
   } catch (error) {
     console.error('Error sincronizando la base de datos:', error);
