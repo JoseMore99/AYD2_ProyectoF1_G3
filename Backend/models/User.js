@@ -60,23 +60,20 @@ const User = sequelize.define('User', {
   timestamps: false
 });
 
-const generateUsername = async (nombre_completo) => {
-  // Convierte el nombre a minúsculas y reemplaza los espacios con "_"
-  let baseUsername = nombre_completo.toLowerCase().split(' ').join('_');
-  
-  // Limita el nombre base a un máximo de 10 caracteres para evitar nombres de usuario muy largos
-  baseUsername = baseUsername.substring(0, 10);
+const generateUsername = async (correo) => {
+  // Extraer la parte local del correo (antes del @)
+  const correoLocal = correo.split('@')[0].toLowerCase();
 
-  // Agrega el prefijo 'qnave' al nombre de usuario
-  let username = `qnave_${baseUsername}`;
-  
+  // Prefijo 'qnave_'
+  let username = `qnave_${correoLocal}`;
+
   // Verifica si el nombre de usuario ya existe
   let userExists = await User.findOne({ where: { nombre_usuario: username } });
 
   // Si el nombre de usuario ya existe, agrega un número aleatorio al final
   while (userExists) {
     const randomNumber = Math.floor(1000 + Math.random() * 9000); // Genera un número de 4 dígitos
-    username = `qnave_${baseUsername}_${randomNumber}`;
+    username = `qnave_${correoLocal}_${randomNumber}`;
     userExists = await User.findOne({ where: { nombre_usuario: username } });
   }
 
