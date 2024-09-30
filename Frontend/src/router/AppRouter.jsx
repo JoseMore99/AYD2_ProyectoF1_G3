@@ -20,6 +20,7 @@ import BajaUsuario from '../components/BajaUsuario';
 import ReportarProblemaDriver from '../views/driver/ReportaProblema';
 import AsistenVerConductores from '../components/AsistenVerConductores'
 import AsistenVerUsuarios from '../components/AsistenVerUsuarios'
+import CancelarViaje from '../components/CancelarViaje';
 
 export const AppRouter = () => {
   return (
@@ -35,6 +36,11 @@ export const AppRouter = () => {
         <Route path="/reporta-inconveniente" element={
           <PrivateRoute role="Usuario">
             <ReportarProblema />
+          </PrivateRoute>
+        } />
+        <Route path="/cancelar-viaje" element={
+          <PrivateRoute role="Usuario">
+           <CancelarViaje/>
           </PrivateRoute>
         } />
 
