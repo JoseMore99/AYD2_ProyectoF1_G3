@@ -195,6 +195,45 @@ const getViajesUsuario = async (req, res) => {
   }
 };
 
+
+const getViajesConductor = async (req, res) => {
+  // console.log("usuarioid:",req.user.id)
+   try {
+     const viajeEnCurso = await Viaje.findAll({
+       where: {
+         //estado: 'en curso',
+         id_conductor: req.user.id,
+       },
+       include: [
+         { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
+         { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
+         { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
+         { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] },
+         {
+           model: User,
+           as: 'conductor',
+           attributes: ['nombre_completo', 'numero_telefono'],
+           include: [
+             {
+               model: Vehiculo,
+               as: 'Vehiculos',
+               attributes: ['marca', 'ano', 'numero_placa', 'foto_vehiculo']
+             }
+           ]
+         }
+       ]
+     });
+ 
+     if (viajeEnCurso.length === 0) {
+       return res.status(404).json({ message: 'No se encontraron viajes en curso' });
+     }
+     res.json({ trips: viajeEnCurso });
+   } catch (error) {
+     console.error('Error al obtener los viajes en curso:', error);
+     res.status(500).json({ message: 'Error al obtener los viajes en curso' });
+   }
+ };
+
 // Aceptar un viaje
 const aceptarViaje = async (req, res) => {
   const { id_viaje } = req.params;
@@ -340,5 +379,6 @@ module.exports = {
   finalizarViaje,
   getViajesEnCurso,
   getViajesEnCursoUser,
-  getViajesUsuario
+  getViajesUsuario,
+  getViajesConductor
 };

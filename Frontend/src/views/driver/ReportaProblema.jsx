@@ -19,6 +19,11 @@ function ReportarProblema() {
     const [alertType, setAlertType] = useState(''); // 'success' o 'danger'
     const [showAlert, setShowAlert] = useState(false);
 
+    //Listar viajes
+    const [availableTrips, setAvailableTrips] = useState([]); // Estado para los viajes disponibles
+
+    
+
     const handleReportarProblema = async () => {
 
 
@@ -63,7 +68,51 @@ function ReportarProblema() {
             setUserName(storedEmail);
             settoken(clave)
         }
-    }, []);
+
+
+        async function fetchActiveTrip() {
+            try {
+                const response = await fetch(`${config.apiUrl}/api/viajes/enCursoConductor`, { // Usa config.apiUrl
+                    headers: {
+                        'x-auth-token': token, // Enviar el token en los headers
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                if (data.trips && data.trips.length > 0) {
+                    setActiveTrip(data.trips[0]); // Guardar el viaje en curso
+                } else {
+                    console.log('No tienes ningún viaje en curso.');
+                }
+            } catch (error) {
+                console.error('Error al obtener el viaje en curso:', error);
+            }
+        }
+
+        // Función para obtener los viajes pendientes
+        async function fetchAvailableTrips() {
+            try {
+                const response = await fetch(`${config.apiUrl}/api/viajes/enCursoConductor`, { // Usa config.apiUrl
+                    headers: {
+                        'x-auth-token': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                if (data.trips) {
+                    setAvailableTrips(data.trips);
+                } else {
+                    console.error('No se encontraron viajes pendientes.');
+                }
+            } catch (error) {
+                console.error('Error al obtener los viajes pendientes:', error);
+            }
+        }
+        fetchActiveTrip();
+        fetchAvailableTrips();
+    }, [token]);
 
     const handleBack = () => {
         navigate('/driver');
@@ -85,15 +134,8 @@ function ReportarProblema() {
                     )}
                     <div class="card-header"><h2>Reportar algun problema:</h2></div>
                     <div class="card-body">
-                        <p class="text-success-emphasis">Debe ingresar El id o el nombre del usuario para realizar el reporte</p>
-                        <div className="row">
-                            <label>id:</label>
-                            <input
-                                type="text"
-                                value={idReportado}
-                                onChange={(e) => setidReportado(e.target.value)}
-                            />
-                        </div>
+                        <p class="text-success-emphasis">Debe ingresar el nombre del usuario para realizar el reporte</p>
+                        
 
                         <div className="row">
                             <label>nombre del reportado:</label>
@@ -135,6 +177,55 @@ function ReportarProblema() {
 
                 {message && <p className="text-warning">{message}</p>}
             </div>
+
+
+            <div className="container my-5">
+            <h3 className="text-center mt-4">Viajes</h3>
+
+            {/* Mostrar los viajes pendientes */}
+            {availableTrips.length > 0 ? (
+                <div className="row">
+                    {availableTrips.map((trip) => (
+                        <div key={trip.id_viaje} className="col-md-4 mb-4">
+                            <div className="card h-100">
+                                <div className="row g-0">
+                                    <div className="col-4 d-flex align-items-center justify-content-center">
+                                        <img
+                                            src="https://via.placeholder.com/100"
+                                            className="img-fluid rounded-start"
+                                            alt="Perfil"
+                                        />
+                                    </div>
+                                    <div className="col-8">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Viaje</h5>
+                                            <p className="card-text">
+                                                <strong>Usuario:</strong> {trip.usuario?.nombre_completo || 'No disponible'}
+                                                <br />
+                                                <strong>Tarifa:</strong> Q{trip.tarifa?.monto || 'No disponible'}
+                                                <br />
+                                                <strong>Punto de partida:</strong> {trip.direccionPartida?.descripcion || 'No disponible'}
+                                                <br />
+                                                <strong>Punto de llegada:</strong> {trip.direccionLlegada?.descripcion || 'No disponible'}
+                                                <br />
+                                                <strong>Estado:</strong> {trip.estado}
+                                                <br />
+                                                <strong>Fecha de inicio:</strong> {new Date(trip.fecha_hora_inicio).toLocaleString()}
+                                            </p>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p>No hay viajes disponibles en este momento.</p>
+            )}
+
+            
+        </div>
         </>
     );
 
