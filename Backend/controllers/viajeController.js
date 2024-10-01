@@ -167,6 +167,7 @@ const getViajesUsuario = async (req, res) => {
       },
       include: [
         { model: User, as: 'usuario', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
+        { model: User, as: 'conductor', attributes: ['nombre_completo', 'correo', 'numero_telefono'] },
         { model: Tarifa, as: 'tarifa', attributes: ['monto'] },
         { model: Direccion, as: 'direccionPartida', attributes: ['descripcion'] }, 
         { model: Direccion, as: 'direccionLlegada', attributes: ['descripcion'] },

@@ -11,7 +11,8 @@ function ReportarProblema() {
     const [message, setMessage] = useState('');
     const isLoggedIn = true;
     const [userName, setUserName] = useState('');
-    const [token, settoken] = useState('');
+    const [activeTrip, setActiveTrip] = useState([]);
+    const token = localStorage.getItem('token');
 
     const handleReportarProblema = async () => {
 
@@ -29,7 +30,7 @@ function ReportarProblema() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization':token
+                'authorization': token
             },
             body: JSON.stringify(data)
         })
@@ -45,16 +46,37 @@ function ReportarProblema() {
 
     };
 
+
     useEffect(() => {
-        // Obtener el correo del localStorage
+        async function fetchActiveTrip() {
+            try {
+                const response = await fetch(`${config.apiUrl}/api/viajes/enCursoUsuario`, { // Usa config.apiUrl
+                    headers: {
+                        'x-auth-token': token, // Enviar el token en los headers
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                if (data.trips && data.trips.length > 0) {
+                    console.log(data.trips)
+                    setActiveTrip(data.trips);
+                } else {
+                    console.log('No tienes ningún viaje en curso.');
+                }
+            } catch (error) {
+                console.error('Error al obtener el viaje en curso:', error);
+            }
+
+        }
+
+        fetchActiveTrip();
         const storedEmail = localStorage.getItem('correo');
-        const clave = localStorage.getItem('token');
-        
+
         if (storedEmail) {
             setUserName(storedEmail);
-            settoken(clave)
         }
-    }, []);
+    }, [token]);
 
     return (
         <>
@@ -110,6 +132,38 @@ function ReportarProblema() {
 
 
                 {message && <p className="text-warning">{message}</p>}
+
+                {activeTrip.length > 0 ? (
+                    activeTrip.map((trip) => (
+                        <div key={trip.id_viaje} className="card mb-3" style={{ width: '30rem' }}>
+                            <div className="row g-0">
+                                <div className="col-md-4 d-flex align-items-center justify-content-center">
+                                    <img
+                                        src="https://via.placeholder.com/100"
+                                        className="img-fluid rounded-start"
+                                        alt="Perfil"
+                                    />
+                                </div>
+                                <div className="col-md-8">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Nuevo Viaje</h5>
+                                        <p className="card-text">
+                                            <strong>Conductor:</strong> {trip.conductor?.nombre_completo || 'No disponible'}<br />
+                                            <strong>Tarifa:</strong> Q{trip.tarifa?.monto || 'No disponible'}<br />
+                                            <strong>Punto de partida:</strong> {trip.direccionPartida?.descripcion || 'No disponible'}<br />
+                                            <strong>Punto de llegada:</strong> {trip.direccionLlegada?.descripcion || 'No disponible'}<br />
+                                            <strong>Estado:</strong> {trip.estado}<br />
+                                            <strong>Fecha de inicio:</strong> {new Date(trip.fecha_hora_inicio).toLocaleString()}
+                                        </p>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>No hay viajes disponibles en este momento.</p>
+                )}
             </div>
         </>
     );
