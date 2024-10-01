@@ -5,6 +5,7 @@ const User = require('../models/User');
 const Reporte = require('../models/Reporte')
 const jwt = require('jsonwebtoken');
 const Viaje = require('../models/Viaje');
+const Calificacion = require('../models/Calificacion');
 require('dotenv').config();
 
 const router = express.Router();
@@ -108,14 +109,53 @@ const ObtenerInfoUser = async (req, res) => {
   const { idUser, emailUser } = req.query;
   try {
     if (idUser == -1) {
-      const usuario = await User.findOne({ where: { correo: emailUser } });
+      const usuario = await User.findOne(
+        {
+           where: { correo: emailUser },
+           include: [
+            {
+              model: Viaje,
+              as: 'viajesUsuario', // Alias opcional para la relación
+              where: { estado: 'finalizado' },
+              attributes: [
+                [Sequelize.fn('COUNT', Sequelize.col('Viajes.id_viaje')), 'totalViajesCompletados']
+              ]
+            },
+            {
+              model: Calificacion,
+              as: 'calificacionesUsuario', // Alias opcional para la relación
+              attributes: [
+                [Sequelize.fn('AVG', Sequelize.col('Calificaciones.puntaje')), 'calificacionPromedio']
+              ]
+            }
+          ],
+          group: ['Users.id']
+       });
       if (!usuario) {
         return res.status(500).send('Usuario no encontrado');
       }
       return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
 
     }
-    const usuario = await User.findOne({ where: { id: idUser } });
+    const usuario = await User.findOne({ where: { id: idUser },
+      include: [
+        {
+          model: Viaje,
+          as: 'viajesUsuario', 
+          where: { estado: 'finalizado' },
+          attributes: [
+            [Sequelize.fn('COUNT', Sequelize.col('Viajes.id_viaje')), 'totalViajesCompletados']
+          ]
+        },
+        {
+          model: Calificacion,
+          as: 'calificacionesUsuario', 
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('Calificaciones.puntaje')), 'calificacionPromedio']
+          ]
+        }
+      ],
+      group: ['Users.id'] });
     if (!usuario) {
       return res.status(500).send('Usuario no encontrado');
     }
@@ -123,6 +163,7 @@ const ObtenerInfoUser = async (req, res) => {
   } catch (error) {
     // Envía una respuesta solo si no se ha enviado ya una
     if (!res.headersSent) {
+      console.log(error)
       res.status(500).send('Error al buscar info de usuario');
     }
   }

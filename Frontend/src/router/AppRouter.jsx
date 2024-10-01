@@ -21,12 +21,14 @@ import ReportarProblemaDriver from '../views/driver/ReportaProblema';
 import AsistenVerConductores from '../components/AsistenVerConductores'
 import AsistenVerUsuarios from '../components/AsistenVerUsuarios'
 import CancelarViaje from '../components/CancelarViaje';
+import RegisterUser from '../components/RegistroForm';
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Principal />} />
+        <Route path="/register" element={<RegisterUser />} />
 
         <Route path="/profile" element={
           <PrivateRoute role="Usuario">
