@@ -111,25 +111,7 @@ const ObtenerInfoUser = async (req, res) => {
     if (idUser == -1) {
       const usuario = await User.findOne(
         {
-           where: { correo: emailUser },
-           include: [
-            {
-              model: Viaje,
-              as: 'viajesUsuario', // Alias opcional para la relación
-              where: { estado: 'finalizado' },
-              attributes: [
-                [Sequelize.fn('COUNT', Sequelize.col('Viajes.id_viaje')), 'totalViajesCompletados']
-              ]
-            },
-            {
-              model: Calificacion,
-              as: 'calificacionesUsuario', // Alias opcional para la relación
-              attributes: [
-                [Sequelize.fn('AVG', Sequelize.col('Calificaciones.puntaje')), 'calificacionPromedio']
-              ]
-            }
-          ],
-          group: ['Users.id']
+           where: { correo: emailUser }
        });
       if (!usuario) {
         return res.status(500).send('Usuario no encontrado');
@@ -137,25 +119,7 @@ const ObtenerInfoUser = async (req, res) => {
       return res.status(201).json({ msg: 'Usuario encontrado exitosamente', usuario });
 
     }
-    const usuario = await User.findOne({ where: { id: idUser },
-      include: [
-        {
-          model: Viaje,
-          as: 'viajesUsuario', 
-          where: { estado: 'finalizado' },
-          attributes: [
-            [Sequelize.fn('COUNT', Sequelize.col('Viajes.id_viaje')), 'totalViajesCompletados']
-          ]
-        },
-        {
-          model: Calificacion,
-          as: 'calificacionesUsuario', 
-          attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('Calificaciones.puntaje')), 'calificacionPromedio']
-          ]
-        }
-      ],
-      group: ['Users.id'] });
+    const usuario = await User.findOne({ where: { id: idUser } });
     if (!usuario) {
       return res.status(500).send('Usuario no encontrado');
     }

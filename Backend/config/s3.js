@@ -23,7 +23,8 @@ const uploadFile = async (fileContent, fileName, Extension) => {
     try {
         const data = await s3.send(new PutObjectCommand(params));
         console.log("Archivo subido con éxito.", data);
-        return data.Location; // Retorna la URL del archivo subido
+        const url = `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/archivos/${name + '.' + Extension}`;
+        return url; // Retorna la URL del archivo subido
     } catch (err) {
         console.error("Error al subir archivo.", err);
         throw err;
